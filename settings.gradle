@@ -13,4 +13,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "TaoComponent"
+/*壳app*/
 include ':app'
+/*基础框架*/
+include ':base'
+/*事件总线*/
+include ':base-bus'
