@@ -19,3 +19,4 @@ include ':app'
 include ':base'
 /*事件总线*/
 include ':base-bus'
+include ':lib-download'
