@@ -19,4 +19,5 @@ include ':app'
 include ':base'
 /*事件总线*/
 include ':base-bus'
+/*多线程下载*/
 include ':lib-download'
