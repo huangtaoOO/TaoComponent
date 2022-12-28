@@ -9,25 +9,25 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public class RxBus {
 
-    private final Subject<Object> bus;
-
-    private RxBus(){
-        bus = PublishSubject.create().toSerialized();
-    }
-
-    public static RxBus getInstance(){
-        return RxBusHolder.mInstance;
-    }
-
-    static class RxBusHolder{
-        private static final RxBus mInstance = new RxBus();
-    }
-
-    public void post(Object obj){
-        bus.onNext(obj);
-    }
-
-    public <T> Observable<T> tObservable(Class<T> eventType){
-        return bus.ofType(eventType);
-    }
+//    private final Subject<Object> bus;
+//
+//    private RxBus(){
+//        bus = PublishSubject.create().toSerialized();
+//    }
+//
+//    public static RxBus getInstance(){
+//        return RxBusHolder.mInstance;
+//    }
+//
+//    static class RxBusHolder{
+//        private static final RxBus mInstance = new RxBus();
+//    }
+//
+//    public void post(Object obj){
+//        bus.onNext(obj);
+//    }
+//
+//    public <T> Observable<T> tObservable(Class<T> eventType){
+//        return bus.ofType(eventType);
+//    }
 }
