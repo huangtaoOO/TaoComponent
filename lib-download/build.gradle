@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
+group = 'com.github.huangtaoOO'
+version = '0.0.3'
 
 android {
     namespace 'com.example.lib_download'
@@ -30,19 +32,20 @@ android {
         jvmTarget = '1.8'
     }
 }
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+}
+
 afterEvaluate {
     publishing {
         publications {
+            // Creates a Maven publication called "release".
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.tao.download' //groupId 随便取
-                artifactId = 'tao'  //artifactId 随便取
-                version = '0.0.1'
+                groupId = 'com.github.huangtaoOO'
+                artifactId = 'lib-download'
+                version = '0.0.3'
             }
         }
     }
-}
-dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.5.1'
 }
