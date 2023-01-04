@@ -21,3 +21,5 @@ include ':base'
 //include ':base-bus'
 /*多线程下载*/
 include ':lib-download'
+/*kotlin的扩展*/
+include ':lib-ktx'
