@@ -1,6 +1,7 @@
 package com.example.lib_download
 
 import android.util.Log
+import com.example.lib_download.core.DownloadHttpHelper
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL

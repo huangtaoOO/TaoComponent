@@ -1,6 +1,8 @@
 package com.example.lib_download
 
 import android.app.Application
+import com.example.lib_download.core.DownloadDbHelper
+import com.example.lib_download.core.DownloadHttpHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import java.util.concurrent.Executor

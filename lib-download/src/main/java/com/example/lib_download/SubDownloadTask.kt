@@ -1,6 +1,7 @@
 package com.example.lib_download
 
 import android.util.Log
+import com.example.lib_download.core.DownloadListener
 import java.io.File
 import java.io.IOException
 import java.io.InputStream

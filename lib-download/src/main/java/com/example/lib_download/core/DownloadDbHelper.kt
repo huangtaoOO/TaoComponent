@@ -1,4 +1,6 @@
-package com.example.lib_download
+package com.example.lib_download.core
+
+import com.example.lib_download.SubDownloadTask
 
 /**
  * Author: huangtao
