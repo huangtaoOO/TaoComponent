@@ -16,7 +16,7 @@ class DownloadDbOpenHelper(context: Context) :
 
     companion object {
         private const val DATABASE_NAME = "downloadDB.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
 
         const val TABLE_NAME = "downloadTask"
@@ -38,13 +38,13 @@ class DownloadDbOpenHelper(context: Context) :
                     "`${FIELDS_SAVE_FILE}` TEXT NOT NULL, " +
                     "`${FIELDS_STATUS}` TEXT NOT NULL, " +
                     "`${FIELDS_COMPLETE_SIZE}` INTEGER NOT NULL," +
-                    " PRIMARY KEY(`${FIELDS_URL}`, `${FIELDS_START_POS}`))"
+                    " PRIMARY KEY(`${FIELDS_URL}`, `${FIELDS_START_POS}`, `${FIELDS_SAVE_FILE}`))"
 
         private const val SQL_DELETE = "DROP TABLE `${TABLE_NAME}`"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.i(DownloadConfig.TAG,"sql=${SQL_CREATE}")
+        Log.i(DownloadConfig.TAG, "sql=${SQL_CREATE}")
         db?.execSQL(SQL_CREATE)
     }
 

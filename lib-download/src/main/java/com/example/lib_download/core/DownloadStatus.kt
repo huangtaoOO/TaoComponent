@@ -1,4 +1,4 @@
-package com.example.lib_download
+package com.example.lib_download.core
 
 /**
  * Author: huangtao

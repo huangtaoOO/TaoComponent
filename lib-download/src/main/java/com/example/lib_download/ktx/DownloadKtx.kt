@@ -2,7 +2,7 @@ package com.example.lib_download.ktx
 
 import android.content.Context
 import com.example.lib_download.core.DownloadListener
-import com.example.lib_download.DownloadStatus
+import com.example.lib_download.core.DownloadStatus
 import com.example.lib_download.DownloadTask
 import java.io.File
 

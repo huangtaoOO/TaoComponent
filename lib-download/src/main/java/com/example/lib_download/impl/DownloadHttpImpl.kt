@@ -1,6 +1,7 @@
-package com.example.lib_download
+package com.example.lib_download.impl
 
 import android.util.Log
+import com.example.lib_download.DownloadConfig
 import com.example.lib_download.core.DownloadHttpHelper
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -9,7 +10,7 @@ import java.net.URL
 /**
  * Author: huangtao
  * Date: 2022/12/27
- * Desc:
+ * Desc: 下载的http 默认实现
  */
 class DownloadHttpImpl : DownloadHttpHelper {
     override fun obtainTotalSize(url: String): Long {

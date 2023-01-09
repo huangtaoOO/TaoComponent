@@ -2,6 +2,9 @@ package com.example.lib_download
 
 import android.util.Log
 import com.example.lib_download.core.DownloadListener
+import com.example.lib_download.core.DownloadStatus
+import com.example.lib_download.model.DownloadModel
+import com.example.lib_download.model.SubDownloadModel
 import java.io.File
 import java.io.RandomAccessFile
 import java.util.concurrent.Executor
@@ -12,12 +15,9 @@ import java.util.concurrent.Executor
  * Desc:
  */
 class DownloadTask(
-    //链接
-    val url: String,
-    //保存路径
-    private val savePath: String,
+    private val download: DownloadModel,
     //回调监听
-    val listener: DownloadListener
+    private val listener: DownloadListener
 ) : DownloadListener {
 
     /**
@@ -66,14 +66,14 @@ class DownloadTask(
             }
             status = DownloadStatus.DOWNLOADING
 
-            val list = DownloadConfig.dbHelper.queryByTaskTag(url)
+            val list = DownloadConfig.dbHelper.queryByTaskTag(download.url, download.savePath)
             subTasks.clear()
             totalSize = 0
             completeSize = 0
             for (task in list) {
                 task.listener = this
-                totalSize += task.taskSize
-                completeSize += task.completeSize
+                totalSize += task.subDownload.taskSize
+                completeSize += task.subDownload.completeSize
             }
             subTasks.addAll(list)
 
@@ -122,14 +122,14 @@ class DownloadTask(
         mExecutorService.execute {
             listener.onStart()
             completeSize = 0
-            val targetFile = File(savePath)
+            val targetFile = File(download.savePath)
             val destinationFolder = File(targetFile.parent ?: "")
             if (!destinationFolder.exists()) {
                 destinationFolder.mkdirs()
             }
             targetFile.createNewFile()
 
-            val size = DownloadConfig.httpHelper.obtainTotalSize(url)
+            val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
             totalSize = size
             val averageSize = size / threadNum
             for (i in 0 until threadNum) {
@@ -140,15 +140,16 @@ class DownloadTask(
                 var start = 0L
                 var index = i
                 while (index > 0) {
-                    start += subTasks[i - 1].taskSize
+                    start += subTasks[i - 1].subDownload.taskSize
                     index--
                 }
                 val end = start + taskSize - 1
+                val subModel = SubDownloadModel(
+                    download.url, taskSize, start,
+                    end, start, targetFile.absolutePath
+                )
                 val subTask =
-                    SubDownloadTask(
-                        url, taskSize, start,
-                        end, start, targetFile, this
-                    )
+                    SubDownloadTask(subModel, this)
                 subTasks.add(subTask)
                 DownloadConfig.dbHelper.insert(subTask)
             }
@@ -164,7 +165,7 @@ class DownloadTask(
     private fun startAsyncDownload() {
         status = DownloadStatus.DOWNLOADING
         for (task in subTasks) {
-            if (task.completeSize < task.taskSize) {
+            if (task.subDownload.completeSize < task.subDownload.taskSize) {
                 mExecutorService.execute(task)
             }
         }
@@ -186,12 +187,13 @@ class DownloadTask(
      */
     override fun onComplete() {
         for (task in subTasks) {
-            if (task.status != DownloadStatus.COMPLETED) {
+            if (task.subDownload.status != DownloadStatus.COMPLETED) {
                 return
             }
         }
         Log.i(
-            DownloadConfig.TAG, "${DownloadConfig.TAG}{${hashCode()}},下载完成 当前的线程名：${Thread.currentThread().name} "
+            DownloadConfig.TAG,
+            "${DownloadConfig.TAG}{${hashCode()}},下载完成 当前的线程名：${Thread.currentThread().name} "
         )
         for (task in subTasks) {
             DownloadConfig.dbHelper.delete(task)

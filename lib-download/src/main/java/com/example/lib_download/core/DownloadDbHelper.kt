@@ -1,6 +1,7 @@
 package com.example.lib_download.core
 
 import com.example.lib_download.SubDownloadTask
+import com.example.lib_download.model.SubDownloadModel
 
 /**
  * Author: huangtao
@@ -13,24 +14,24 @@ interface DownloadDbHelper {
      * 删除一个任务
      * @param task 下载子任务
      */
-    fun delete(task : SubDownloadTask)
+    fun delete(task: SubDownloadTask)
 
     /**
      * 添加一个子任务
      * @param task 子任务
      */
-    fun insert(task : SubDownloadTask)
+    fun insert(task: SubDownloadTask)
 
     /**
      * 更新一个任务
      * @param task 子任务
      */
-    fun update(task : SubDownloadTask)
+    fun update(task: SubDownloadTask)
 
     /**
      * 根据url查询相关任务
      * @param url 下载链接
      * @return 相关子任务 无：返回空列表
      */
-    fun queryByTaskTag(url : String):List<SubDownloadTask>
+    fun queryByTaskTag(url: String, saveFile: String): List<SubDownloadModel>
 }

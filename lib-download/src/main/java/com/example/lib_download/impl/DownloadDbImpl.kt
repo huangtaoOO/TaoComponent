@@ -1,9 +1,13 @@
-package com.example.lib_download
+package com.example.lib_download.impl
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.lib_download.DownloadConfig
+import com.example.lib_download.core.DownloadStatus
+import com.example.lib_download.SubDownloadTask
 import com.example.lib_download.core.DownloadDbHelper
 import com.example.lib_download.db.DownloadDbOpenHelper
+import com.example.lib_download.model.SubDownloadModel
 import java.io.File
 
 /**
@@ -22,7 +26,7 @@ class DownloadDbImpl : DownloadDbHelper {
             val writeDb = db.writableDatabase
             val selection =
                 "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_START_POS} = ?"
-            val selectionArgs = arrayOf(task.url, task.startPos.toString())
+            val selectionArgs = arrayOf(task.subDownload.url, task.subDownload.startPos.toString())
             writeDb.delete(
                 DownloadDbOpenHelper.TABLE_NAME,
                 selection,
@@ -37,17 +41,17 @@ class DownloadDbImpl : DownloadDbHelper {
         try {
             val writeDb = db.writableDatabase
             val value = ContentValues().apply {
-                put(DownloadDbOpenHelper.FIELDS_URL, task.url)
-                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.completeSize)
-                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.taskSize)
-                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.saveFile.absolutePath)
-                put(DownloadDbOpenHelper.FIELDS_START_POS, task.startPos)
-                put(DownloadDbOpenHelper.FIELDS_END_POS, task.endPos)
-                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.currentPos)
-                put(DownloadDbOpenHelper.FIELDS_STATUS, task.status.name)
+                put(DownloadDbOpenHelper.FIELDS_URL, task.subDownload.url)
+                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.subDownload.completeSize)
+                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.subDownload.taskSize)
+                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.subDownload.saveFile)
+                put(DownloadDbOpenHelper.FIELDS_START_POS, task.subDownload.startPos)
+                put(DownloadDbOpenHelper.FIELDS_END_POS, task.subDownload.endPos)
+                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.subDownload.currentPos)
+                put(DownloadDbOpenHelper.FIELDS_STATUS, task.subDownload.status.name)
             }
             writeDb.insert(DownloadDbOpenHelper.TABLE_NAME, null, value)
-        }catch (e : Exception){
+        } catch (e: Exception) {
             Log.e(DownloadConfig.TAG, e.message, e)
         }
     }
@@ -56,29 +60,29 @@ class DownloadDbImpl : DownloadDbHelper {
         try {
             val writeDb = db.writableDatabase
             val value = ContentValues().apply {
-                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.completeSize)
-                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.taskSize)
-                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.saveFile.absolutePath)
-                put(DownloadDbOpenHelper.FIELDS_END_POS, task.endPos)
-                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.currentPos)
-                put(DownloadDbOpenHelper.FIELDS_STATUS, task.status.name)
+                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.subDownload.completeSize)
+                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.subDownload.taskSize)
+                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.subDownload.saveFile)
+                put(DownloadDbOpenHelper.FIELDS_END_POS, task.subDownload.endPos)
+                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.subDownload.currentPos)
+                put(DownloadDbOpenHelper.FIELDS_STATUS, task.subDownload.status.name)
             }
 
             val selection =
                 "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_START_POS} = ?"
-            val selectionArgs = arrayOf(task.url, task.startPos.toString())
+            val selectionArgs = arrayOf(task.subDownload.url, task.subDownload.startPos.toString())
             writeDb.update(
                 DownloadDbOpenHelper.TABLE_NAME,
                 value,
                 selection,
                 selectionArgs
             )
-        }catch (e : Exception){
+        } catch (e: Exception) {
             Log.e(DownloadConfig.TAG, e.message, e)
         }
     }
 
-    override fun queryByTaskTag(url: String): List<SubDownloadTask> {
+    override fun queryByTaskTag(url: String, saveFile: String): List<SubDownloadModel> {
         try {
             val readDb = db.readableDatabase
             val projection =
@@ -93,8 +97,9 @@ class DownloadDbImpl : DownloadDbHelper {
                     DownloadDbOpenHelper.FIELDS_SAVE_FILE
                 )
 
-            val selection = "${DownloadDbOpenHelper.FIELDS_URL} = ?"
-            val selectionArgs = arrayOf(url)
+            val selection =
+                "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_SAVE_FILE}"
+            val selectionArgs = arrayOf(url, saveFile)
 
             val sortOrder = "${DownloadDbOpenHelper.FIELDS_START_POS} DESC"
 
@@ -108,17 +113,16 @@ class DownloadDbImpl : DownloadDbHelper {
                 sortOrder
             )
 
-            val result = mutableListOf<SubDownloadTask>()
+            val result = mutableListOf<SubDownloadModel>()
             with(cursor) {
                 while (moveToNext()) {
-                    val sub = SubDownloadTask(
+                    val sub = SubDownloadModel(
                         getString(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_URL)),
                         getLong(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_TASK_SIZE)),
                         getLong(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_START_POS)),
                         getLong(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_END_POS)),
                         getLong(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_CURRENT_POS)),
-                        File(getString(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_SAVE_FILE))),
-                        null
+                        getString(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_SAVE_FILE))
                     ).apply {
                         completeSize =
                             getLong(getColumnIndexOrThrow(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE))
@@ -138,7 +142,7 @@ class DownloadDbImpl : DownloadDbHelper {
             }
             cursor.close()
             return result
-        }catch (e : Exception){
+        } catch (e: Exception) {
             Log.e(DownloadConfig.TAG, e.message, e)
         }
         return emptyList()
