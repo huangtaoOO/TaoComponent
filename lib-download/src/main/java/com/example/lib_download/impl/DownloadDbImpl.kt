@@ -8,7 +8,6 @@ import com.example.lib_download.SubDownloadTask
 import com.example.lib_download.core.DownloadDbHelper
 import com.example.lib_download.db.DownloadDbOpenHelper
 import com.example.lib_download.model.SubDownloadModel
-import java.io.File
 
 /**
  * Author: huangtao
@@ -21,12 +20,12 @@ class DownloadDbImpl : DownloadDbHelper {
         DownloadDbOpenHelper(DownloadConfig.context)
     }
 
-    override fun delete(task: SubDownloadTask) {
+    override fun delete(model: SubDownloadModel) {
         try {
             val writeDb = db.writableDatabase
             val selection =
                 "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_START_POS} = ?"
-            val selectionArgs = arrayOf(task.subDownload.url, task.subDownload.startPos.toString())
+            val selectionArgs = arrayOf(model.url, model.startPos.toString())
             writeDb.delete(
                 DownloadDbOpenHelper.TABLE_NAME,
                 selection,
@@ -37,18 +36,18 @@ class DownloadDbImpl : DownloadDbHelper {
         }
     }
 
-    override fun insert(task: SubDownloadTask) {
+    override fun insert(model: SubDownloadModel) {
         try {
             val writeDb = db.writableDatabase
             val value = ContentValues().apply {
-                put(DownloadDbOpenHelper.FIELDS_URL, task.subDownload.url)
-                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.subDownload.completeSize)
-                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.subDownload.taskSize)
-                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.subDownload.saveFile)
-                put(DownloadDbOpenHelper.FIELDS_START_POS, task.subDownload.startPos)
-                put(DownloadDbOpenHelper.FIELDS_END_POS, task.subDownload.endPos)
-                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.subDownload.currentPos)
-                put(DownloadDbOpenHelper.FIELDS_STATUS, task.subDownload.status.name)
+                put(DownloadDbOpenHelper.FIELDS_URL, model.url)
+                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, model.completeSize)
+                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, model.taskSize)
+                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, model.saveFile)
+                put(DownloadDbOpenHelper.FIELDS_START_POS, model.startPos)
+                put(DownloadDbOpenHelper.FIELDS_END_POS, model.endPos)
+                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, model.currentPos)
+                put(DownloadDbOpenHelper.FIELDS_STATUS, model.status.name)
             }
             writeDb.insert(DownloadDbOpenHelper.TABLE_NAME, null, value)
         } catch (e: Exception) {
@@ -56,21 +55,21 @@ class DownloadDbImpl : DownloadDbHelper {
         }
     }
 
-    override fun update(task: SubDownloadTask) {
+    override fun update(model: SubDownloadModel) {
         try {
             val writeDb = db.writableDatabase
             val value = ContentValues().apply {
-                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, task.subDownload.completeSize)
-                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, task.subDownload.taskSize)
-                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, task.subDownload.saveFile)
-                put(DownloadDbOpenHelper.FIELDS_END_POS, task.subDownload.endPos)
-                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, task.subDownload.currentPos)
-                put(DownloadDbOpenHelper.FIELDS_STATUS, task.subDownload.status.name)
+                put(DownloadDbOpenHelper.FIELDS_COMPLETE_SIZE, model.completeSize)
+                put(DownloadDbOpenHelper.FIELDS_TASK_SIZE, model.taskSize)
+                put(DownloadDbOpenHelper.FIELDS_SAVE_FILE, model.saveFile)
+                put(DownloadDbOpenHelper.FIELDS_END_POS, model.endPos)
+                put(DownloadDbOpenHelper.FIELDS_CURRENT_POS, model.currentPos)
+                put(DownloadDbOpenHelper.FIELDS_STATUS, model.status.name)
             }
 
             val selection =
                 "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_START_POS} = ?"
-            val selectionArgs = arrayOf(task.subDownload.url, task.subDownload.startPos.toString())
+            val selectionArgs = arrayOf(model.url, model.startPos.toString())
             writeDb.update(
                 DownloadDbOpenHelper.TABLE_NAME,
                 value,
@@ -98,7 +97,7 @@ class DownloadDbImpl : DownloadDbHelper {
                 )
 
             val selection =
-                "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_SAVE_FILE}"
+                "${DownloadDbOpenHelper.FIELDS_URL} = ? AND ${DownloadDbOpenHelper.FIELDS_SAVE_FILE} = ?"
             val selectionArgs = arrayOf(url, saveFile)
 
             val sortOrder = "${DownloadDbOpenHelper.FIELDS_START_POS} DESC"

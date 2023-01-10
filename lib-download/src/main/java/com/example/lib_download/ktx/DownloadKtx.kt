@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.lib_download.core.DownloadListener
 import com.example.lib_download.core.DownloadStatus
 import com.example.lib_download.DownloadTask
+import com.example.lib_download.model.DownloadModel
 import java.io.File
 
 /**
@@ -17,9 +18,9 @@ fun createDownloadTask(
     savePath: String,
     listener: DownloadListener? = null
 ): DownloadTask {
+    val model = DownloadModel(url, savePath)
     return DownloadTask(
-        url,
-        savePath,
+        model,
         listener ?: object : DownloadListener {
             override fun onDownloading(progress: Long, total: Long) {
             }
@@ -36,7 +37,7 @@ fun createDownloadTask(
  */
 fun createDownloadFile(context: Context, url: String): String {
     val path = "${context.filesDir.absolutePath}${File.separator}Download-T"
-    return getSavedFile(url,path).absolutePath
+    return getSavedFile(url, path).absolutePath
 }
 
 /**

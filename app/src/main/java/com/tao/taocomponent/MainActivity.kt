@@ -12,13 +12,24 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tvProgress :TextView
-    private lateinit var btnDownload : Button
-    private lateinit var btnSuspend :Button
+    private lateinit var tvProgress: TextView
+    private lateinit var btnDownload: Button
+    private lateinit var btnSuspend: Button
 
     private val downloadTask by lazy {
         val file = filesDir.absolutePath + File.separator + "download" + File.separator + "tim.exe"
-        createDownloadTask("https://dldir1.qq.com/qqfile/qq/TIM3.4.3/TIM3.4.3.22064.exe",file)
+        createDownloadTask(
+            "https://dldir1.qq.com/qqfile/qq/TIM3.4.3/TIM3.4.3.22064.exe",
+            file,
+            object :
+                com.example.lib_download.core.DownloadListener {
+                @SuppressLint("SetTextI18n")
+                override fun onDownloading(progress: Long, total: Long) {
+                    runOnUiThread {
+                        tvProgress.text = "${progress}/${total}"
+                    }
+                }
+            })
     }
 
     @SuppressLint("MissingInflatedId")
@@ -33,9 +44,9 @@ class MainActivity : AppCompatActivity() {
         btnSuspend = findViewById(R.id.btn_suspend)
 
         btnDownload.setOnClickListener {
-            if (downloadTask.isComplete()){
+            if (downloadTask.isComplete()) {
                 downloadTask.resetDownloadTask()
-            }else{
+            } else {
                 downloadTask.download()
             }
         }

@@ -70,12 +70,12 @@ class DownloadTask(
             subTasks.clear()
             totalSize = 0
             completeSize = 0
-            for (task in list) {
-                task.listener = this
-                totalSize += task.subDownload.taskSize
-                completeSize += task.subDownload.completeSize
+            for (model in list) {
+                val subTask = SubDownloadTask(model,this)
+                totalSize += model.taskSize
+                completeSize += model.completeSize
+                subTasks.add(subTask)
             }
-            subTasks.addAll(list)
 
             if (subTasks.isEmpty()) {
                 downloadNewTask()
@@ -107,7 +107,7 @@ class DownloadTask(
     fun resetDownloadTask() {
         mExecutorService.execute {
             for (task in subTasks) {
-                DownloadConfig.dbHelper.delete(task)
+                DownloadConfig.dbHelper.delete(task.subDownload)
             }
             subTasks.clear()
             downloadNewTask()
@@ -151,7 +151,7 @@ class DownloadTask(
                 val subTask =
                     SubDownloadTask(subModel, this)
                 subTasks.add(subTask)
-                DownloadConfig.dbHelper.insert(subTask)
+                DownloadConfig.dbHelper.insert(subTask.subDownload)
             }
 
             val file = RandomAccessFile(targetFile.absolutePath, "rwd")
@@ -196,7 +196,7 @@ class DownloadTask(
             "${DownloadConfig.TAG}{${hashCode()}},下载完成 当前的线程名：${Thread.currentThread().name} "
         )
         for (task in subTasks) {
-            DownloadConfig.dbHelper.delete(task)
+            DownloadConfig.dbHelper.delete(task.subDownload)
         }
         status = DownloadStatus.COMPLETED
     }
@@ -209,7 +209,7 @@ class DownloadTask(
         //出现异常 暂停,清除任务重新下载
         pauseDownload()
         for (task in subTasks) {
-            DownloadConfig.dbHelper.delete(task)
+            DownloadConfig.dbHelper.delete(task.subDownload)
         }
         subTasks.clear()
         listener.onError(msg)

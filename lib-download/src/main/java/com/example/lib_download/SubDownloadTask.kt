@@ -76,7 +76,7 @@ class SubDownloadTask(
         if (subDownload.status == DownloadStatus.DOWNLOADING) {
             subDownload.status = DownloadStatus.COMPLETED
         }
-        DownloadConfig.dbHelper.update(this)
+        DownloadConfig.dbHelper.update(subDownload)
         //处理回调
         if (subDownload.status == DownloadStatus.COMPLETED) {
             listener?.onComplete()
