@@ -8,11 +8,11 @@ group = 'com.github.huangtaoOO'
 version = '0.0.3'
 
 android {
-    compileSdk 32
+    compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdk 23
-        targetSdk 32
+        minSdk rootProject.ext.android.minSdkVersion
+        targetSdk rootProject.ext.android.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

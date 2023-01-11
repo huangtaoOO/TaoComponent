@@ -1,5 +1,7 @@
 package com.example.lib_download
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.example.lib_download.core.DownloadListener
 import com.example.lib_download.core.DownloadStatus
@@ -36,6 +38,8 @@ class DownloadTask(
     private val mExecutorService: Executor by lazy {
         DownloadConfig.mExecutorService
     }
+
+    private val mHandle = Handler(Looper.getMainLooper())
 
     /**
      * 开始下载
@@ -158,8 +162,10 @@ class DownloadTask(
      */
     override fun onDownloading(progress: Long, total: Long) {
         synchronized(this) {
-            download.completeSize += progress
-            listener.onDownloading(download.completeSize, download.totalSize)
+            mHandle.post {
+                download.completeSize += progress
+                listener.onDownloading(download.completeSize, download.totalSize)
+            }
         }
     }
 

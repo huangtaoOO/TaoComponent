@@ -3,16 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
-group = 'com.github.huangtaoOO'
-version = '0.0.3'
 
 android {
     namespace 'com.example.lib_download'
-    compileSdk 32
+    compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdk 24
-        targetSdk 32
+        minSdk rootProject.ext.android.minSdkVersion
+        targetSdk rootProject.ext.android.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -44,7 +42,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.huangtaoOO'
                 artifactId = 'lib-download'
-                version = '0.0.3'
+                version = '0.0.4'
             }
         }
     }

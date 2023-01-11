@@ -1,5 +1,6 @@
 package com.example.lib_download.impl
 
+import android.os.Build
 import android.util.Log
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.core.DownloadHttpHelper
@@ -16,7 +17,11 @@ class DownloadHttpImpl : DownloadHttpHelper {
     override fun obtainTotalSize(url: String): Long {
         val urlPath = URL(url)
         val connection = urlPath.openConnection() as HttpURLConnection
-        return connection.contentLengthLong
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connection.contentLengthLong
+        } else {
+            connection.contentLength.toLong()
+        }
     }
 
     override fun obtainStreamByRange(url: String, start: Long, end: Long): InputStream? {
@@ -29,10 +34,15 @@ class DownloadHttpImpl : DownloadHttpHelper {
         connection.connectTimeout = 3000
         connection.addRequestProperty("RANGE", "bytes=${start}-${end}")
         connection.connect()
+        val lengthLong = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connection.contentLengthLong
+        } else {
+            connection.contentLength.toLong()
+        }
         Log.i(
             DownloadConfig.TAG,
             "${DownloadConfig.TAG},请求路径：${url}\n " +
-                    "状态码：${connection.responseCode} 长度：${connection.contentLengthLong}"
+                    "状态码：${connection.responseCode} 长度：${lengthLong}"
         )
         return if (connection.responseCode == 206) {
             connection.inputStream

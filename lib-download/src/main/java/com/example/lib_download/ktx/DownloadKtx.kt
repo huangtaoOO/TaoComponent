@@ -2,7 +2,6 @@ package com.example.lib_download.ktx
 
 import android.content.Context
 import com.example.lib_download.core.DownloadListener
-import com.example.lib_download.core.DownloadStatus
 import com.example.lib_download.DownloadTask
 import com.example.lib_download.model.DownloadModel
 import java.io.File
@@ -11,18 +10,19 @@ import java.io.File
  * 提供一个创建下载任务的方法
  * @param url 下载链接
  * @param savePath 保存路径
- * @param listener 下载监听 注：回调在子线程
+ * @param call 下载监听,不要做耗时操作
  */
 fun createDownloadTask(
     url: String,
     savePath: String,
-    listener: DownloadListener? = null
+    call: ((progress: Long, total: Long) -> Unit)?
 ): DownloadTask {
     val model = DownloadModel(url, savePath)
     return DownloadTask(
         model,
-        listener ?: object : DownloadListener {
+        object : DownloadListener {
             override fun onDownloading(progress: Long, total: Long) {
+                call?.invoke(progress, total)
             }
         })
 }

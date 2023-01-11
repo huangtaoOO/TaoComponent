@@ -4,29 +4,21 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.lib_download.DownloadConfig
+import com.example.lib_download.ktx.createDownloadFile
 import com.example.lib_download.ktx.createDownloadTask
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.taocomponent.databinding.ActivityMainBinding
-import java.io.File
 
+@SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by binding()
 
     private val downloadTask by lazy {
-        val file = filesDir.absolutePath + File.separator + "download" + File.separator + "tim.exe"
-        createDownloadTask(
-            "https://dldir1.qq.com/qqfile/qq/TIM3.4.3/TIM3.4.3.22064.exe",
-            file,
-            object :
-                com.example.lib_download.core.DownloadListener {
-                @SuppressLint("SetTextI18n")
-                override fun onDownloading(progress: Long, total: Long) {
-                    runOnUiThread {
-                        binding.tvProgress.text = "${progress}/${total}"
-                    }
-                }
-            })
+        val url = "https://dldir1.qq.com/qqfile/qq/TIM3.4.3/TIM3.4.3.22064.exe"
+        createDownloadTask(url, createDownloadFile(context = this, url)) { progress, total ->
+            binding.tvProgress.text = "${progress}/${total}"
+        }
     }
 
     @SuppressLint("MissingInflatedId")
