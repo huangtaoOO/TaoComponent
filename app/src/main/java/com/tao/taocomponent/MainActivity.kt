@@ -3,18 +3,15 @@ package com.tao.taocomponent
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.ktx.createDownloadTask
-import com.example.lib_download.ktx.isComplete
+import com.example.lib_ktx.viewbinding.binding
+import com.tao.taocomponent.databinding.ActivityMainBinding
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tvProgress: TextView
-    private lateinit var btnDownload: Button
-    private lateinit var btnSuspend: Button
+    private val binding: ActivityMainBinding by binding()
 
     private val downloadTask by lazy {
         val file = filesDir.absolutePath + File.separator + "download" + File.separator + "tim.exe"
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 @SuppressLint("SetTextI18n")
                 override fun onDownloading(progress: Long, total: Long) {
                     runOnUiThread {
-                        tvProgress.text = "${progress}/${total}"
+                        binding.tvProgress.text = "${progress}/${total}"
                     }
                 }
             })
@@ -35,15 +32,10 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         DownloadConfig.setContext(application)
 
-        tvProgress = findViewById(R.id.tv_progress)
-        btnDownload = findViewById(R.id.btn_download)
-        btnSuspend = findViewById(R.id.btn_suspend)
-
-        btnDownload.setOnClickListener {
+        binding.btnDownload.setOnClickListener {
             if (downloadTask.isComplete()) {
                 downloadTask.resetDownloadTask()
             } else {
@@ -51,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnSuspend.setOnClickListener {
+        binding.btnSuspend.setOnClickListener {
             downloadTask.pauseDownload()
         }
     }

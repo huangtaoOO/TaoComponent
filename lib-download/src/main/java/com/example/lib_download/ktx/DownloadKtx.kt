@@ -58,15 +58,6 @@ fun deleteDir(dir: File): Boolean {
     return dir.delete()
 }
 
-
-/**
- * 当前任务是否完成
- * @return 是or否
- */
-fun DownloadTask.isComplete(): Boolean {
-    return this.status == DownloadStatus.COMPLETED
-}
-
 /**
  * 根据下载的链接，截取最后一个【/】后面的内容作为文件名
  * @param url 下载链接

@@ -21,24 +21,6 @@ class DownloadTask(
 ) : DownloadListener {
 
     /**
-     * 完成大小
-     */
-    @Volatile
-    var completeSize: Long = 0
-        private set
-
-    /**
-     * 文件总大小
-     */
-    private var totalSize: Long = 0
-
-    /**
-     * 状态
-     */
-    var status: DownloadStatus = DownloadStatus.IDLE
-        private set
-
-    /**
      * 线程数
      */
     private val threadNum = DownloadConfig.threadNum
@@ -61,19 +43,19 @@ class DownloadTask(
      */
     fun download() {
         mExecutorService.execute {
-            if (status == DownloadStatus.DOWNLOADING) {
+            if (download.status == DownloadStatus.DOWNLOADING) {
                 return@execute
             }
-            status = DownloadStatus.DOWNLOADING
+            download.status = DownloadStatus.DOWNLOADING
 
             val list = DownloadConfig.dbHelper.queryByTaskTag(download.url, download.savePath)
             subTasks.clear()
-            totalSize = 0
-            completeSize = 0
+            download.totalSize = 0
+            download.completeSize = 0
             for (model in list) {
-                val subTask = SubDownloadTask(model,this)
-                totalSize += model.taskSize
-                completeSize += model.completeSize
+                val subTask = SubDownloadTask(model, this)
+                download.totalSize += model.taskSize
+                download.completeSize += model.completeSize
                 subTasks.add(subTask)
             }
 
@@ -91,13 +73,13 @@ class DownloadTask(
      * 暂停下载任务
      */
     fun pauseDownload() {
-        if (status != DownloadStatus.DOWNLOADING) {
+        if (download.status != DownloadStatus.DOWNLOADING) {
             return
         }
         for (task in subTasks) {
             task.pause()
         }
-        status = DownloadStatus.PAUSE
+        download.status = DownloadStatus.PAUSE
         listener.onPause()
     }
 
@@ -121,7 +103,7 @@ class DownloadTask(
     private fun downloadNewTask() {
         mExecutorService.execute {
             listener.onStart()
-            completeSize = 0
+            download.completeSize = 0
             val targetFile = File(download.savePath)
             val destinationFolder = File(targetFile.parent ?: "")
             if (!destinationFolder.exists()) {
@@ -130,12 +112,12 @@ class DownloadTask(
             targetFile.createNewFile()
 
             val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
-            totalSize = size
+            download.totalSize = size
             val averageSize = size / threadNum
             for (i in 0 until threadNum) {
                 var taskSize = averageSize
                 if (i == (threadNum - 1)) {
-                    taskSize += totalSize % threadNum
+                    taskSize += download.totalSize % threadNum
                 }
                 var start = 0L
                 var index = i
@@ -163,7 +145,7 @@ class DownloadTask(
     }
 
     private fun startAsyncDownload() {
-        status = DownloadStatus.DOWNLOADING
+        download.status = DownloadStatus.DOWNLOADING
         for (task in subTasks) {
             if (task.subDownload.completeSize < task.subDownload.taskSize) {
                 mExecutorService.execute(task)
@@ -176,8 +158,8 @@ class DownloadTask(
      */
     override fun onDownloading(progress: Long, total: Long) {
         synchronized(this) {
-            completeSize += progress
-            listener.onDownloading(completeSize, totalSize)
+            download.completeSize += progress
+            listener.onDownloading(download.completeSize, download.totalSize)
         }
     }
 
@@ -198,7 +180,7 @@ class DownloadTask(
         for (task in subTasks) {
             DownloadConfig.dbHelper.delete(task.subDownload)
         }
-        status = DownloadStatus.COMPLETED
+        download.status = DownloadStatus.COMPLETED
     }
 
 
@@ -216,4 +198,10 @@ class DownloadTask(
         listener.onCancel()
     }
 
+    /**
+     * 任务是否完成
+     */
+    fun isComplete(): Boolean {
+        return download.status == DownloadStatus.COMPLETED
+    }
 }
