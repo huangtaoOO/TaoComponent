@@ -1,4 +1,6 @@
 ext {
+    libversion = '0.0.5'
+
     android = [
             'compileSdkVersion': 32,
             'minSdkVersion'    : 21,
@@ -6,6 +8,13 @@ ext {
     ]
 
     dependencies = [
+            'coreKtx'               : '1.9.0',
+            'material'              : '1.7.0',
+            'appcompat'             : '1.5.1',
+            'testJunit'             : '4.13.2',
+            'junit'                 : '1.1.5',
+            'espressoCor'           : '3.4.0',
 
+            'constraintlayout'      : '2.1.4'
     ]
 }
