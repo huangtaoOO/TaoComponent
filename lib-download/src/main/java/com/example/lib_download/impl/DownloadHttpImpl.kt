@@ -17,11 +17,15 @@ class DownloadHttpImpl : DownloadHttpHelper {
     override fun obtainTotalSize(url: String): Long {
         val urlPath = URL(url)
         val connection = urlPath.openConnection() as HttpURLConnection
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        val length = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connection.contentLengthLong
         } else {
             connection.contentLength.toLong()
         }
+        Log.i(
+            DownloadConfig.TAG, "${DownloadConfig.TAG},请求路径：${url}\n总长度：${length}"
+        )
+        return length
     }
 
     override fun obtainStreamByRange(url: String, start: Long, end: Long): InputStream? {

@@ -43,6 +43,14 @@ object DownloadConfig {
         private set
 
     /**
+     * 下载阈值
+     * 如果下载所需的文件大小小于当前值则单线程下载
+     * 默认：512 Kb
+     */
+    var downloadThreshold: Long
+        private set
+
+    /**
      * 线程池
      */
     var mExecutorService: Executor
@@ -51,6 +59,7 @@ object DownloadConfig {
 
     init {
         threadNum = 4
+        downloadThreshold = 1024 * 512
         dbHelper = DownloadDbImpl()
         httpHelper = DownloadHttpImpl()
         mExecutorService = Dispatchers.IO.asExecutor()
@@ -98,6 +107,14 @@ object DownloadConfig {
      */
     fun setExecutor(executor: Executor): DownloadConfig {
         mExecutorService = executor
+        return this
+    }
+
+    /**
+     * 设置下载的阈值
+     */
+    fun setDownloadThreshold(size: Long): DownloadConfig {
+        downloadThreshold = size
         return this
     }
 }

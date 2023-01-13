@@ -25,7 +25,7 @@ class DownloadTask(
     /**
      * 线程数
      */
-    private val threadNum = DownloadConfig.threadNum
+    private var threadNum = DownloadConfig.threadNum
 
     /**
      * 子任务列表
@@ -47,28 +47,28 @@ class DownloadTask(
      */
     fun download() {
         mExecutorService.execute {
-            if (download.status == DownloadStatus.DOWNLOADING) {
-                return@execute
-            }
-            download.status = DownloadStatus.DOWNLOADING
+            download.apply {
+                if (status == DownloadStatus.DOWNLOADING)
+                    return@execute
+                status = DownloadStatus.DOWNLOADING
 
-            val list = DownloadConfig.dbHelper.queryByTaskTag(download.url, download.savePath)
-            subTasks.clear()
-            download.totalSize = 0
-            download.completeSize = 0
-            for (model in list) {
-                val subTask = SubDownloadTask(model, this)
-                download.totalSize += model.taskSize
-                download.completeSize += model.completeSize
-                subTasks.add(subTask)
-            }
-
-            if (subTasks.isEmpty()) {
-                downloadNewTask()
-            } else if (subTasks.size == threadNum) {
-                existDownloadTask()
-            } else {
-                resetDownloadTask()
+                val list = DownloadConfig.dbHelper.queryByTaskTag(url, savePath)
+                subTasks.clear()
+                totalSize = 0
+                completeSize = 0
+                for (model in list) {
+                    val subTask = SubDownloadTask(model, this@DownloadTask)
+                    totalSize += model.taskSize
+                    completeSize += model.completeSize
+                    subTasks.add(subTask)
+                }
+                if (subTasks.isEmpty()) {
+                    downloadNewTask()
+                } else if (subTasks.size == threadNum) {
+                    continueDownloadTask()
+                } else {
+                    resetDownloadTask()
+                }
             }
         }
     }
@@ -77,14 +77,16 @@ class DownloadTask(
      * 暂停下载任务
      */
     fun pauseDownload() {
-        if (download.status != DownloadStatus.DOWNLOADING) {
-            return
+        download.apply {
+            if (status != DownloadStatus.DOWNLOADING) {
+                return
+            }
+            for (task in subTasks) {
+                task.pause()
+            }
+            status = DownloadStatus.PAUSE
+            listener.onPause()
         }
-        for (task in subTasks) {
-            task.pause()
-        }
-        download.status = DownloadStatus.PAUSE
-        listener.onPause()
     }
 
     /**
@@ -100,7 +102,7 @@ class DownloadTask(
         }
     }
 
-    private fun existDownloadTask() {
+    private fun continueDownloadTask() {
         startAsyncDownload()
     }
 
@@ -116,6 +118,9 @@ class DownloadTask(
             targetFile.createNewFile()
 
             val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
+            if (size <= DownloadConfig.downloadThreshold) {
+                threadNum = 1
+            }
             download.totalSize = size
             val averageSize = size / threadNum
             for (i in 0 until threadNum) {
@@ -129,7 +134,13 @@ class DownloadTask(
                     start += subTasks[i - 1].subDownload.taskSize
                     index--
                 }
-                val end = start + taskSize - 1
+                // FIX: 下载总长度比源文件小于1的情况
+                val offset = if (i == (threadNum - 1)) {
+                    0
+                } else {
+                    1
+                }
+                val end = start + taskSize - offset
                 val subModel = SubDownloadModel(
                     download.url, taskSize, start,
                     end, start, targetFile.absolutePath
