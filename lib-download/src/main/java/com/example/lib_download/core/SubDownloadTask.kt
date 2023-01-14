@@ -1,8 +1,7 @@
-package com.example.lib_download
+package com.example.lib_download.core
 
 import android.util.Log
-import com.example.lib_download.core.DownloadListener
-import com.example.lib_download.core.DownloadStatus
+import com.example.lib_download.DownloadConfig
 import com.example.lib_download.model.SubDownloadModel
 import java.io.IOException
 import java.io.InputStream

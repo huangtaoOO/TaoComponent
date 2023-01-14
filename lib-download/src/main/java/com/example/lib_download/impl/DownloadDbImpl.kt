@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.util.Log
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.core.DownloadStatus
-import com.example.lib_download.SubDownloadTask
 import com.example.lib_download.core.DownloadDbHelper
 import com.example.lib_download.db.DownloadDbOpenHelper
 import com.example.lib_download.model.SubDownloadModel
