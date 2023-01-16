@@ -3,6 +3,8 @@ package com.tao.taocomponent
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.alibaba.android.arouter.launcher.ARouter
+import com.example.base.RouterURL
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.ktx.createDownloadFile
 import com.example.lib_download.ktx.createDownloadTask
@@ -40,6 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSuspend.setOnClickListener {
             downloadTask.pauseDownload()
+        }
+
+        binding.btnLogin.setOnClickListener {
+            ARouter.getInstance().build(RouterURL.LOGIN).navigation()
         }
     }
 }

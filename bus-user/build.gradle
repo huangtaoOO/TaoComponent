@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'maven-publish'
     id 'kotlin-kapt'
 }
 
 android {
+    namespace 'com.tao.bus.user'
     compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
@@ -29,16 +29,28 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
+    implementation project(":base")
+    implementation project(":lib-ktx")
+
+    implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
+    implementation "com.google.android.material:material:$rootProject.ext.dependencies.material"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.dependencies.constraintlayout"
+    testImplementation "junit:junit:$rootProject.ext.dependencies.testJunit"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.dependencies.junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.dependencies.espressoCore"
 
     //阿里路由
     implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"

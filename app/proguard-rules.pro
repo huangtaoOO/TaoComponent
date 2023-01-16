@@ -20,7 +20,22 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+
+#----lib-ktx 中的ViewBinding使用了反射----
 -keepclassmembers class * implements androidx.viewbinding.ViewBinding {
     public static ** inflate(...);
     public static ** bind(***);
 }
+#----end----
+
+#----阿里云 路由组件----
+-keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep public class com.alibaba.android.arouter.facade.**{*;}
+-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+
+# 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口
+-keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
+
+# 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
+# -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+#----end----

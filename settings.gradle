@@ -13,6 +13,15 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "TaoComponent"
+
+/**
+ * 模块说明：
+ * app = 壳工程
+ * base = 基础模块
+ * lib = 可以单独使用的模块，可以发布成三方库
+ * bus = 业务模块，承载业务逻辑，可以单独使用
+ */
+
 /*壳app*/
 include ':app'
 /*基础框架*/
@@ -21,3 +30,5 @@ include ':base'
 include ':lib-download'
 /*kotlin的扩展*/
 include ':lib-ktx'
+/*业务-用户*/
+include ':bus-user'

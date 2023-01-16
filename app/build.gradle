@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -14,6 +15,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
     }
 
     buildTypes {
@@ -22,6 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -38,11 +46,19 @@ android {
 dependencies {
     implementation project(":lib-download")
     implementation project(":lib-ktx")
+
+    implementation project(":base")
+    implementation project(":bus-user")
+
     implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
-    implementation "com.google.android.material:material:$rootProject.ext.dependencies.appcompat"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
     implementation "com.google.android.material:material:$rootProject.ext.dependencies.material"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.dependencies.constraintlayout"
     testImplementation "junit:junit:$rootProject.ext.dependencies.testJunit"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.dependencies.junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.dependencies.espressoCore"
+
+    //阿里路由
+    implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"
+    kapt "com.alibaba:arouter-compiler:$rootProject.ext.dependencies.arouter"
 }
