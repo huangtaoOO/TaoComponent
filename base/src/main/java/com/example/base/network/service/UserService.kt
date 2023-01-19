@@ -1,7 +1,8 @@
 package com.example.base.network.service
 
 import com.example.base.network.NetUrlConst
-import com.example.base.network.entity.BaseEntity
+import com.example.base.entity.BaseEntity
+import com.example.base.entity.user.UserEntity
 import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,7 +18,7 @@ interface UserService {
     @POST(NetUrlConst.LOGIN)
     suspend fun login(
        @Query("username") username: String,
-       @Query("password") password: String): BaseEntity<String>
+       @Query("password") password: String): BaseEntity<UserEntity>
 
     @POST(NetUrlConst.REGISTER)
     suspend fun register(

@@ -1,54 +1,51 @@
 package com.tao.bus.user
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.base.base.BaseActivity
 import com.example.base.RouterURL
-import com.example.base.network.entity.NetCode
-import com.example.base.network.service.UserService
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.bus.user.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @Route(path = RouterURL.LOGIN)
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
-    private val binding by binding<ActivityLoginBinding>()
+    private val binding: ActivityLoginBinding by binding()
 
-    @Inject
-    internal lateinit var uerService: UserService
+    private val mViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.btLogin.setOnClickListener {
-            lifecycleScope.launchWhenResumed {
-                text(Dispatchers.IO)
+        lifecycleScope.launchWhenResumed {
+            mViewModel.loginFlow.collect {
+                if (it == null) return@collect
+                Toast.makeText(this@LoginActivity, "返回的数据=$it", Toast.LENGTH_LONG).show()
             }
+        }
+
+        binding.btLogin.setOnClickListener {
+            loginLogic()
         }
     }
 
-    private suspend fun text(context: CoroutineContext) {
-        withContext(context) {
-            val response = uerService.login(binding.edName.toString(), binding.edPassword.toString())
-            Log.i("LoginActivity","返回的数据=$response")
-            when (response.errorCode) {
-                NetCode.ERROR.value -> {
-
-                }
-                NetCode.NORMAL.value -> {
-
-                }
-            }
+    private fun loginLogic() {
+        val name = binding.edName.text.toString().trim()
+        val password = binding.edPassword.text.toString().trim()
+        if (!mViewModel.checkName(name)) {
+            Toast.makeText(this, "用户名${mViewModel.nameLength}位", Toast.LENGTH_LONG).show()
+            return
         }
+        if (!mViewModel.checkPassWord(password)) {
+            Toast.makeText(this, "密码${mViewModel.passwordLength}位", Toast.LENGTH_LONG).show()
+            return
+        }
+        mViewModel.login(name, password)
     }
 
 }

@@ -46,6 +46,7 @@ dependencies {
     implementation project(":lib-ktx")
 
     implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
+    implementation "androidx.activity:activity-ktx:1.6.1"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
     implementation "com.google.android.material:material:$rootProject.ext.dependencies.material"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.dependencies.constraintlayout"

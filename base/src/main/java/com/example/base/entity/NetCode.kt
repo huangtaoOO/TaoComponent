@@ -1,4 +1,4 @@
-package com.example.base.network.entity
+package com.example.base.entity
 
 /**
  * Author: huangtao
