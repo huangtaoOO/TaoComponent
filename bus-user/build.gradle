@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -55,4 +56,8 @@ dependencies {
     //阿里路由
     implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"
     kapt "com.alibaba:arouter-compiler:$rootProject.ext.dependencies.arouter"
+
+    //hilt依赖注入
+    implementation "com.google.dagger:hilt-android:$rootProject.ext.dependencies.hilt"
+    kapt "com.google.dagger:hilt-compiler:$rootProject.ext.dependencies.hilt"
 }

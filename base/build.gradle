@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -43,4 +44,17 @@ dependencies {
     //阿里路由
     implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"
     kapt "com.alibaba:arouter-compiler:$rootProject.ext.dependencies.arouter"
+
+    //OkHttp
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$rootProject.ext.dependencies.okhttp"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.dependencies.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.dependencies.retrofit"
+
+    //hilt依赖注入
+    implementation "com.google.dagger:hilt-android:$rootProject.ext.dependencies.hilt"
+    kapt "com.google.dagger:hilt-compiler:$rootProject.ext.dependencies.hilt"
 }

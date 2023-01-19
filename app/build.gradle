@@ -64,8 +64,8 @@ dependencies {
     kapt "com.alibaba:arouter-compiler:$rootProject.ext.dependencies.arouter"
 
     //hilt依赖注入
-    implementation "com.google.dagger:hilt-android:2.44.2"
-    kapt "com.google.dagger:hilt-compiler:2.44.2"
+    implementation "com.google.dagger:hilt-android:$rootProject.ext.dependencies.hilt"
+    kapt "com.google.dagger:hilt-compiler:$rootProject.ext.dependencies.hilt"
 }
 
 //hilt允许引用生成的代码
