@@ -1,6 +1,6 @@
 package com.tao.bus.user.data
 
-import com.example.base.data.Repository
+import com.example.base.data.DataSource
 import com.example.base.entity.BaseEntity
 import com.example.base.data.Result
 import com.example.base.entity.user.UserEntity
@@ -10,7 +10,7 @@ import com.example.base.entity.user.UserEntity
  * Date: 2023/1/19
  * Desc: 登录的数据源接口
  */
-interface UserDataSource : Repository {
+interface UserDataSource : DataSource {
 
     /**
      * 登录
