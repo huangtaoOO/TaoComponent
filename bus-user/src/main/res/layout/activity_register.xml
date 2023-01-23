@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.RegisterActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl"
@@ -43,33 +44,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ed_name" />
 
-    <Button
-        android:id="@+id/bt_login"
+    <EditText
+        android:id="@+id/ed_re_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="68dp"
+        android:background="@null"
+        android:hint="验证密码"
+        android:inputType="textPassword"
         android:padding="6dp"
-        android:text="登录"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ed_password" />
 
     <Button
-        android:id="@+id/bt_to_register"
+        android:id="@+id/bt_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="68dp"
         android:padding="6dp"
-        android:text="去注册"
+        android:text="注册"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bt_login" />
+        app:layout_constraintTop_toBottomOf="@id/ed_re_password" />
+
+    <Button
+        android:id="@+id/bt_to_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="68dp"
+        android:padding="6dp"
+        android:text="去登录"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bt_register" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

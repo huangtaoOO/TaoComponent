@@ -9,4 +9,7 @@ object RouterURL {
 
     /*****************登录*****************/
     const val LOGIN = "/User/Login"
+
+    /*****************注册*****************/
+    const val REGISTER = "/User/REGISTER"
 }
