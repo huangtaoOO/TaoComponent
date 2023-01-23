@@ -5,6 +5,7 @@ import com.example.base.base.BaseViewModel
 import com.example.base.data.Result
 import com.example.base.entity.BaseEntity
 import com.tao.bus.user.data.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -15,8 +16,9 @@ import javax.inject.Inject
  * Date: 2023/1/23
  * Desc: 注册的viewModel
  */
-class RegisterViewModel constructor(
-    @Inject private val repository: UserRepository
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val repository: UserRepository
 ) : BaseViewModel() {
 
     private val mRegisterFlow = MutableStateFlow<Result<Int>?>(null)

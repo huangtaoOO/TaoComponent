@@ -41,8 +41,9 @@ class RegisterActivity : BaseActivity() {
                 when (it) {
                     is Result.Success<Int> -> {
                         if (it.data == NetCode.NORMAL.value) {
-                            showToast("注册成功:${it.data}")
+                            showToast("注册成功")
                             ARouter.getInstance().build(RouterURL.LOGIN).navigation()
+                            finish()
                         } else {
                             showToast("注册失败错误:${it.data}")
                         }
@@ -56,6 +57,7 @@ class RegisterActivity : BaseActivity() {
 
         binding.btToLogin.click {
             ARouter.getInstance().build(RouterURL.REGISTER).navigation()
+            finish()
         }
 
         binding.btRegister.click {
