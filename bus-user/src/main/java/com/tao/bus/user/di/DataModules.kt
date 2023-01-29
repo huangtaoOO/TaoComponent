@@ -14,7 +14,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Singleton
 
 /**
  * Author: huangtao
@@ -45,7 +44,7 @@ object DataSourceModule {
         userService: UserService,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): UserDataSource {
-        return RemoteDataSource(userService,ioDispatcher)
+        return RemoteDataSource(userService, ioDispatcher)
     }
 
     @Local
