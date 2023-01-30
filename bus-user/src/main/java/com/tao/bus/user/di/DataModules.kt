@@ -1,5 +1,6 @@
 package com.tao.bus.user.di
 
+import android.content.Context
 import com.example.base.di.IoDispatcher
 import com.example.base.di.Local
 import com.example.base.di.Remote
@@ -13,6 +14,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
@@ -49,7 +51,9 @@ object DataSourceModule {
 
     @Local
     @Provides
-    fun provideTasksLocalDataSource(): UserDataSource {
-        return LocalDataSource()
+    fun provideTasksLocalDataSource(
+        @ApplicationContext context: Context
+    ): UserDataSource {
+        return LocalDataSource(context)
     }
 }

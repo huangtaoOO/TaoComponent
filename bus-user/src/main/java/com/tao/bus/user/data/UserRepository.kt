@@ -4,6 +4,7 @@ import com.example.base.data.Repository
 import com.example.base.entity.BaseEntity
 import com.example.base.data.Result
 import com.example.base.entity.user.UserEntity
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Author: huangtao
@@ -30,15 +31,15 @@ interface UserRepository : Repository {
     /**
      * 保存用户信息
      */
-    suspend fun saveUserInfo():Result<Unit>
+    suspend fun saveUserInfo(entity: UserEntity)
 
     /**
-     * 清除用户信息
+     * 清除当前用户信息
      */
-    suspend fun clearUserInfo():Result<Unit>
+    suspend fun clearUserInfo()
 
     /**
      * 获取用户信息
      */
-    suspend fun obtainUserInfo():Result<Unit>
+    suspend fun obtainUserInfo(): Result<UserEntity>
 }

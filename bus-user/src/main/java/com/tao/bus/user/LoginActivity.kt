@@ -28,6 +28,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launchWhenResumed {
+            binding.edName.setText(mViewModel.obtainUserName())
             mViewModel.loginFlow.collect {
                 if (it == null) return@collect
                 Toast.makeText(this@LoginActivity, "返回的数据=$it", Toast.LENGTH_LONG).show()

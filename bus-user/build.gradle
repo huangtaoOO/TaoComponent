@@ -46,7 +46,7 @@ dependencies {
     implementation project(":lib-ktx")
 
     implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
-    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation "androidx.activity:activity-ktx:$rootProject.ext.dependencies.activityKtx"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
     implementation "com.google.android.material:material:$rootProject.ext.dependencies.material"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.dependencies.constraintlayout"
@@ -61,4 +61,10 @@ dependencies {
     //hilt依赖注入
     implementation "com.google.dagger:hilt-android:$rootProject.ext.dependencies.hilt"
     kapt "com.google.dagger:hilt-compiler:$rootProject.ext.dependencies.hilt"
+
+    //Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:$rootProject.ext.dependencies.datastore"
+
+    //Gson
+    implementation "com.google.code.gson:gson:$rootProject.ext.dependencies.gson"
 }

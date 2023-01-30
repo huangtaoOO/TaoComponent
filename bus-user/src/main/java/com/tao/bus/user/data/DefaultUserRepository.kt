@@ -2,7 +2,8 @@ package com.tao.bus.user.data
 
 import com.example.base.data.Result
 import com.example.base.entity.BaseEntity
-import com.example.base.entity.user.UserEntity
+import kotlinx.coroutines.flow.Flow
+import com.example.base.entity.user.UserEntity as UserEntity
 
 /**
  * Author: huangtao
@@ -14,10 +15,13 @@ class DefaultUserRepository(
     private val localDataSource: UserDataSource,
 ) : UserRepository {
 
-    override suspend fun signIn(username: String, password: String): Result<BaseEntity<UserEntity>> {
+    override suspend fun signIn(
+        username: String,
+        password: String
+    ): Result<BaseEntity<UserEntity>> {
         val result = remoteDataSource.signIn(username, password)
         if (result is Result.Success && result.data.isSuccess) {
-            saveUserInfo()
+            saveUserInfo(result.data.data)
         }
         return result
     }
@@ -34,15 +38,15 @@ class DefaultUserRepository(
         return remoteDataSource.register(username, password)
     }
 
-    override suspend fun saveUserInfo(): Result<Unit> {
-        return localDataSource.saveUserInfo()
+    override suspend fun saveUserInfo(entity: UserEntity) {
+        localDataSource.saveUserInfo(entity)
     }
 
-    override suspend fun clearUserInfo(): Result<Unit> {
-        return localDataSource.saveUserInfo()
+    override suspend fun clearUserInfo() {
+        localDataSource.clearUserInfo()
     }
 
-    override suspend fun obtainUserInfo(): Result<Unit> {
+    override suspend fun obtainUserInfo(): Result<UserEntity> {
         return localDataSource.obtainUserInfo()
     }
 }

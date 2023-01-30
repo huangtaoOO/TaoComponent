@@ -1,10 +1,12 @@
 package com.tao.bus.user.data.remote
 
 import com.example.base.data.Result
+import com.example.base.entity.user.UserEntity
 import com.example.base.network.service.UserService
 import com.tao.bus.user.data.UserDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 /**
@@ -41,15 +43,15 @@ class RemoteDataSource(
         }
     }
 
-    override suspend fun saveUserInfo(): Result<Unit> {
+    override suspend fun saveUserInfo(entity: UserEntity) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun clearUserInfo(): Result<Unit> {
+    override suspend fun clearUserInfo() {
         TODO("Not yet implemented")
     }
 
-    override suspend fun obtainUserInfo(): Result<Unit> {
+    override suspend fun obtainUserInfo(): Result<UserEntity> {
         TODO("Not yet implemented")
     }
 }
