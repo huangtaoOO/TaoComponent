@@ -7,7 +7,6 @@ import com.tao.bus.user.data.UserRepository
 import com.example.base.data.Result
 import com.example.base.data.succeeded
 import com.example.base.entity.user.UserEntity
-import com.tao.bus.user.constant.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +29,12 @@ class LoginViewModel @Inject constructor(
     fun login(name: String, password: String) {
         viewModelScope.launch {
             mLoginFlow.value = repository.signIn(name, password)
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.signOut()
         }
     }
 

@@ -43,6 +43,10 @@ class LoginActivity : BaseActivity() {
             ARouter.getInstance().build(RouterURL.REGISTER).navigation()
             finish()
         }
+
+        binding.btLogOut.click {
+            mViewModel.logout()
+        }
     }
 
     private fun loginLogic() {
