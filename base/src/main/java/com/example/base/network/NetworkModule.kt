@@ -3,6 +3,9 @@ package com.example.base.network
 import android.content.Context
 import android.util.Log
 import com.example.base.network.service.UserService
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +37,7 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor { message ->
                 Log.i(TAG, message)
             }.setLevel(HttpLoggingInterceptor.Level.BODY))
+            .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context)))
             .build()
         return okHttpClient
     }

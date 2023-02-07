@@ -24,6 +24,7 @@ ext {
             'okhttp'          : '4.10.0',
             'retrofit'        : '2.9.0',
 
-            'gson'          : '2.10.1'
+            'gson'            : '2.10.1',
+            'cookieJar'       : 'v1.0.1'
     ]
 }

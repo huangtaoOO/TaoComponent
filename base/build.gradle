@@ -49,6 +49,7 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$rootProject.ext.dependencies.okhttp"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation "com.github.franmontiel:PersistentCookieJar:$rootProject.ext.dependencies.cookieJar"
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.dependencies.retrofit"
