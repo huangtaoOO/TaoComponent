@@ -13,9 +13,10 @@ import com.tao.bus.user.data.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
 
 /**
  * Author: huangtao
@@ -24,10 +25,11 @@ import kotlinx.coroutines.CoroutineDispatcher
  */
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
     @Provides
+    @Singleton
     fun provideTasksRepository(
         @Remote remoteDataSource: UserDataSource,
         @Local localDataSource: UserDataSource
@@ -37,11 +39,12 @@ object RepositoryModule {
 }
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object DataSourceModule {
 
     @Remote
     @Provides
+    @Singleton
     fun provideUserRemoteDataSource(
         userService: UserService,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
@@ -51,6 +54,7 @@ object DataSourceModule {
 
     @Local
     @Provides
+    @Singleton
     fun provideTasksLocalDataSource(
         @ApplicationContext context: Context
     ): UserDataSource {

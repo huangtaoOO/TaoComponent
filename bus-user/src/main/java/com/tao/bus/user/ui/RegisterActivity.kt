@@ -56,7 +56,7 @@ class RegisterActivity : BaseActivity() {
         }
 
         binding.btToLogin.click {
-            ARouter.getInstance().build(RouterURL.REGISTER).navigation()
+            ARouter.getInstance().build(RouterURL.LOGIN).navigation()
             finish()
         }
 

@@ -21,6 +21,8 @@ import kotlinx.coroutines.runBlocking
  */
 class LocalDataSource(private val context: Context) : UserDataSource {
 
+    private var userInfo: UserEntity? = null
+
     override suspend fun signIn(
         username: String,
         password: String
@@ -38,6 +40,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
 
     override suspend fun saveUserInfo(entity: UserEntity) {
         context.dataStore.edit {
+            userInfo = entity
             val uid = intPreferencesKey(DataSourceConstant.UID)
             it[uid] = entity.id
             val info = stringPreferencesKey(DataSourceConstant.UINFO)
@@ -47,6 +50,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
 
     override suspend fun clearUserInfo() {
         context.dataStore.edit {
+            userInfo = null
             val uid = intPreferencesKey(DataSourceConstant.UID)
             it[uid] = 0
             val info = stringPreferencesKey(DataSourceConstant.UINFO)
@@ -55,21 +59,24 @@ class LocalDataSource(private val context: Context) : UserDataSource {
     }
 
     override suspend fun obtainUserInfo(): Result<UserEntity> {
-        return runBlocking {
-            context.dataStore.data
-                .map { preferences ->
-                    val info = stringPreferencesKey(DataSourceConstant.UINFO)
-                    preferences[info] ?: ""
-                }
-                .map {
-                    if (it.isNotEmpty()) {
-                        Result.Success(
-                            Gson().fromJson(it, UserEntity::class.java)
-                        )
-                    } else {
-                        Result.Error(NullPointerException("存储数据字段为null"))
+        if (userInfo != null) {
+            return Result.Success(userInfo!!)
+        } else {
+            return runBlocking {
+                context.dataStore.data
+                    .map { preferences ->
+                        val info = stringPreferencesKey(DataSourceConstant.UINFO)
+                        preferences[info] ?: ""
                     }
-                }.first()
+                    .map {
+                        if (it.isNotEmpty()) {
+                            userInfo = Gson().fromJson(it, UserEntity::class.java)
+                            Result.Success(userInfo!!)
+                        } else {
+                            Result.Error(NullPointerException("存储数据字段为null"))
+                        }
+                    }.first()
+            }
         }
     }
 }
