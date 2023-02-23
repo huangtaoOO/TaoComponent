@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.example.lib_download.DownloadConfig
+import com.example.lib_download.exception.DownloadException
 import com.example.lib_download.model.DownloadModel
 import com.example.lib_download.model.SubDownloadModel
 import java.io.File
@@ -44,6 +45,7 @@ class DownloadTask(
      * 开始下载
      * 如果是暂停的则从上次的位置继续下载
      */
+    @Throws(DownloadException::class)
     fun download() {
         mExecutorService.execute {
             download.apply {
@@ -91,6 +93,7 @@ class DownloadTask(
     /**
      *重置下载任务
      */
+    @Throws(DownloadException::class)
     fun resetDownloadTask() {
         mExecutorService.execute {
             for (task in subTasks) {
@@ -105,6 +108,7 @@ class DownloadTask(
         startAsyncDownload()
     }
 
+    @Throws(DownloadException::class)
     private fun downloadNewTask() {
         mExecutorService.execute {
             listener.onStart()
@@ -117,6 +121,9 @@ class DownloadTask(
             targetFile.createNewFile()
 
             val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
+            if (size <= 0){
+                throw DownloadException()
+            }
             if (size <= DownloadConfig.downloadThreshold) {
                 threadNum = 1
             }
