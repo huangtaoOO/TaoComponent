@@ -17,6 +17,7 @@ class DownloadHttpImpl : DownloadHttpHelper {
     override fun obtainTotalSize(url: String): Long {
         val urlPath = URL(url)
         val connection = urlPath.openConnection() as HttpURLConnection
+        connection.setRequestProperty("Accept-Encoding","identity")
         val length = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connection.contentLengthLong
         } else {
@@ -35,8 +36,9 @@ class DownloadHttpImpl : DownloadHttpHelper {
         )
         val urlPath = URL(url)
         val connection = urlPath.openConnection() as HttpURLConnection
-        connection.connectTimeout = 3000
+        connection.setRequestProperty("Accept-Encoding","identity")
         connection.addRequestProperty("RANGE", "bytes=${start}-${end}")
+        connection.connectTimeout = 3000
         connection.connect()
         val lengthLong = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connection.contentLengthLong
