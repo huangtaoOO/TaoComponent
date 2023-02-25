@@ -14,6 +14,7 @@ import com.tao.taocomponent.databinding.ActivityMainBinding
 @SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {
 
+
     private val binding: ActivityMainBinding by binding()
 
     private val downloadTask by lazy {
