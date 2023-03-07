@@ -34,3 +34,4 @@ include ':lib-download'
 include ':lib-ktx'
 /*业务-用户*/
 include ':bus-user'
+include ':bus-home'

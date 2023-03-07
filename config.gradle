@@ -11,7 +11,7 @@ ext {
             'coreKtx'         : '1.9.0',
             'activityKtx'    : '1.6.1',
             'material'        : '1.8.0',
-            'appcompat'       : '1.6.0',
+            'appcompat'       : '1.6.1',
             'testJunit'       : '4.13.2',
             'junit'           : '1.1.5',
             'espressoCor'     : '3.4.0',
