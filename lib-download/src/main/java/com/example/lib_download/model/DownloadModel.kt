@@ -30,6 +30,7 @@ data class DownloadModel(
     /**
      * 状态
      */
+    @Volatile
     var status: DownloadStatus = DownloadStatus.IDLE
         internal set
 }
