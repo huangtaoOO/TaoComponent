@@ -96,8 +96,10 @@ class DownloadTask(
     @Throws(DownloadException::class)
     fun resetDownloadTask() {
         mExecutorService.execute {
+            download.status = DownloadStatus.IDLE
             for (task in subTasks) {
                 DownloadConfig.dbHelper.delete(task.subDownload)
+                task.subDownload.status = DownloadStatus.ERROR
             }
             subTasks.clear()
             downloadNewTask()
@@ -112,6 +114,7 @@ class DownloadTask(
     private fun downloadNewTask() {
         mExecutorService.execute {
             listener.onStart()
+            download.status = DownloadStatus.DOWNLOADING
             download.completeSize = 0
             val targetFile = File(download.savePath)
             val destinationFolder = File(targetFile.parent ?: "")
