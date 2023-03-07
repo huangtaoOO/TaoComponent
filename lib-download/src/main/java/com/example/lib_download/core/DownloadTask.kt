@@ -125,7 +125,8 @@ class DownloadTask(
 
             val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
             if (size <= 0){
-                throw DownloadException()
+                listener.onError("下载出现异常，将要下载文件的长度小于0")
+                return@execute
             }
             if (size <= DownloadConfig.downloadThreshold) {
                 threadNum = 1
@@ -207,6 +208,7 @@ class DownloadTask(
             DownloadConfig.dbHelper.delete(task.subDownload)
         }
         download.status = DownloadStatus.COMPLETED
+        listener.onComplete()
     }
 
 
