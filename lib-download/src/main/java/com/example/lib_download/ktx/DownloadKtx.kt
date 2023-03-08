@@ -69,7 +69,18 @@ private fun getSavedFile(url: String, saveCatalogue: String): File {
     if (!catalogue.exists()) {
         catalogue.mkdirs()
     }
-    val fileName = url.substring(url.lastIndexOf("/"), url.length)
+    val lastIndex = url.lastIndexOf("/").let {
+        if (it <= -1){
+            0
+        }else{
+            it
+        }
+    }
+    val fileName = url.substring(lastIndex, url.length).let {
+        it.ifBlank {
+            System.currentTimeMillis().toString()
+        }
+    }
     val savePath = catalogue.absolutePath + File.separator + fileName
     val saveFile = File(savePath)
     if (saveFile.exists()) {
