@@ -36,6 +36,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -50,6 +53,10 @@ dependencies {
     testImplementation "junit:junit:$rootProject.ext.dependencies.testJunit"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.dependencies.junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.dependencies.espressoCore"
+
+    //navigation组件
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.ext.dependencies.navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.ext.dependencies.navigation"
 
     //阿里路由
     implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"

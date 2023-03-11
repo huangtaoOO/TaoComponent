@@ -5,9 +5,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.example.base.base.BaseActivity
 import com.example.base.RouterURL
+import com.example.base.navigation.navigation
 import com.example.lib_ktx.ui.click
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.bus.user.constant.Constant
@@ -32,6 +32,7 @@ class LoginActivity : BaseActivity() {
             mViewModel.loginFlow.collect {
                 if (it == null) return@collect
                 Toast.makeText(this@LoginActivity, "返回的数据=$it", Toast.LENGTH_LONG).show()
+                navigation(RouterURL.HOME_PAGE) { finish() }
             }
         }
 
@@ -40,8 +41,7 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btToRegister.click {
-            ARouter.getInstance().build(RouterURL.REGISTER).navigation()
-            finish()
+            navigation(RouterURL.REGISTER) { finish() }
         }
 
         binding.btLogOut.click {

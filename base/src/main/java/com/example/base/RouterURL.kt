@@ -12,4 +12,7 @@ object RouterURL {
 
     /*****************注册*****************/
     const val REGISTER = "/User/REGISTER"
+
+    /*****************首页*****************/
+    const val HOME_PAGE = "/Home/Page"
 }
