@@ -3,6 +3,7 @@ package com.tao.bus.user.data
 import com.example.base.data.DataSource
 import com.example.base.entity.BaseEntity
 import com.example.base.entity.user.UserEntity
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Author: huangtao
@@ -40,4 +41,9 @@ interface UserDataSource : DataSource {
      * 获取用户信息
      */
     suspend fun obtainUserInfo(): Result<UserEntity>
+
+    /**
+     * 获取用户信息流
+     */
+    fun obtainUserInfoFlow(): StateFlow<UserEntity?>
 }

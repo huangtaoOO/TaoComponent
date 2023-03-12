@@ -1,11 +1,11 @@
 package com.tao.bus.user.data.remote
 
-import android.util.Log
 import com.example.base.entity.user.UserEntity
 import com.example.base.network.service.UserService
 import com.tao.bus.user.data.UserDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 /**
@@ -51,6 +51,10 @@ class RemoteDataSource(
     }
 
     override suspend fun obtainUserInfo(): Result<UserEntity> {
+        TODO("Not yet implemented")
+    }
+
+    override fun obtainUserInfoFlow(): StateFlow<UserEntity?> {
         TODO("Not yet implemented")
     }
 }

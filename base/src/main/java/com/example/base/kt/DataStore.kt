@@ -10,5 +10,4 @@ import androidx.datastore.preferences.preferencesDataStore
  * Date: 2023/1/29
  * Desc: dataStore扩展
  */
-
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "com.example.base")

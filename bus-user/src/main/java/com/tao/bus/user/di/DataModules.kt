@@ -1,11 +1,13 @@
 package com.tao.bus.user.di
 
 import android.content.Context
+import com.example.base.data.user.UserShareRepository
 import com.example.base.di.IoDispatcher
 import com.example.base.di.Local
 import com.example.base.di.Remote
 import com.example.base.network.service.UserService
 import com.tao.bus.user.data.DefaultUserRepository
+import com.tao.bus.user.data.DefaultUserShareRepository
 import com.tao.bus.user.data.UserDataSource
 import com.tao.bus.user.data.UserRepository
 import com.tao.bus.user.data.local.LocalDataSource
@@ -23,6 +25,18 @@ import javax.inject.Singleton
  * Date: 2023/1/19
  * Desc: 依赖注入
  */
+@Module
+@InstallIn(SingletonComponent::class)
+object ShareRepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        repository: UserRepository
+    ): UserShareRepository {
+        return DefaultUserShareRepository(repository)
+    }
+}
 
 @Module
 @InstallIn(SingletonComponent::class)

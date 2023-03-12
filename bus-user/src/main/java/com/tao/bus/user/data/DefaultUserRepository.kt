@@ -1,7 +1,7 @@
 package com.tao.bus.user.data
 
-import android.util.Log
 import com.example.base.entity.BaseEntity
+import kotlinx.coroutines.flow.StateFlow
 import com.example.base.entity.user.UserEntity as UserEntity
 
 /**
@@ -48,4 +48,9 @@ class DefaultUserRepository(
     override suspend fun obtainUserInfo(): Result<UserEntity> {
         return localDataSource.obtainUserInfo()
     }
+
+    override fun obtainUserInfoFlow(): StateFlow<UserEntity?> {
+        return localDataSource.obtainUserInfoFlow()
+    }
+
 }

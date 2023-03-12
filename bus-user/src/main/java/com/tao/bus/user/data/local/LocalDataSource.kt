@@ -9,8 +9,7 @@ import com.example.base.entity.user.UserEntity
 import com.example.base.kt.dataStore
 import com.google.gson.Gson
 import com.tao.bus.user.data.UserDataSource
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
 /**
@@ -20,7 +19,7 @@ import kotlinx.coroutines.runBlocking
  */
 class LocalDataSource(private val context: Context) : UserDataSource {
 
-    private var userInfo: UserEntity? = null
+    private val userInfo: MutableStateFlow<UserEntity?> = MutableStateFlow(null)
 
     override suspend fun signIn(
         username: String,
@@ -39,7 +38,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
 
     override suspend fun saveUserInfo(entity: UserEntity) {
         context.dataStore.edit {
-            userInfo = entity
+            userInfo.value = entity
             val uid = intPreferencesKey(DataSourceConstant.UID)
             it[uid] = entity.id
             val info = stringPreferencesKey(DataSourceConstant.UINFO)
@@ -49,7 +48,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
 
     override suspend fun clearUserInfo() {
         context.dataStore.edit {
-            userInfo = null
+            userInfo.value = null
             val uid = intPreferencesKey(DataSourceConstant.UID)
             it[uid] = 0
             val info = stringPreferencesKey(DataSourceConstant.UINFO)
@@ -58,8 +57,8 @@ class LocalDataSource(private val context: Context) : UserDataSource {
     }
 
     override suspend fun obtainUserInfo(): Result<UserEntity> {
-        if (userInfo != null) {
-            return Result.success(userInfo!!)
+        if (userInfo.value != null) {
+            return Result.success(userInfo.value!!)
         } else {
             return runBlocking {
                 context.dataStore.data
@@ -69,8 +68,12 @@ class LocalDataSource(private val context: Context) : UserDataSource {
                     }
                     .map {
                         if (it.isNotEmpty()) {
-                            userInfo = Gson().fromJson(it, UserEntity::class.java)
-                            Result.success(userInfo!!)
+                            userInfo.value = Gson().fromJson(it, UserEntity::class.java)
+                            if (userInfo.value == null){
+                                Result.failure(NullPointerException("存储数据字段为null"))
+                            }else{
+                                Result.success(userInfo.value!!)
+                            }
                         } else {
                             Result.failure(NullPointerException("存储数据字段为null"))
                         }
@@ -78,4 +81,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
             }
         }
     }
+
+    override fun obtainUserInfoFlow(): StateFlow<UserEntity?> = userInfo
+
 }

@@ -40,8 +40,7 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btLogin.click {
-//            loginLogic()
-            navigation(RouterURL.HOME_PAGE) { finish() }
+            loginLogic()
         }
 
         binding.btToRegister.click {
