@@ -17,7 +17,7 @@ ext {
             'espressoCor'     : '3.4.0',
 
             'constraintlayout': '2.1.4',
-            'navigation'      : '2.4.1',
+            'navigation'      : '2.5.3',
 
             'arouter'         : '1.5.2',
             'hilt'            : '2.44.2',

@@ -2,7 +2,6 @@ package com.tao.bus.user.ui
 
 import androidx.lifecycle.viewModelScope
 import com.example.base.base.BaseViewModel
-import com.example.base.data.Result
 import com.example.base.entity.BaseEntity
 import com.tao.bus.user.data.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,13 +28,11 @@ class RegisterViewModel @Inject constructor(
             if (password != rePassword) {
                 return@launch
             }
-            when (val result = repository.register(name, password)) {
-                is Result.Success<BaseEntity<Unit>> -> {
-                    mRegisterFlow.value = Result.Success(result.data.errorCode)
-                }
-                is Result.Error -> {
-                    mRegisterFlow.value = result
-                }
+            val result = repository.register(name,password)
+            if (result.isSuccess){
+                mRegisterFlow.value = Result.success(result.getOrThrow().errorCode)
+            }else{
+                mRegisterFlow.value = Result.failure(result.exceptionOrNull()?:NullPointerException("异常"))
             }
         }
     }

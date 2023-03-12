@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.base.data.Result
 import com.example.base.entity.BaseEntity
 import com.example.base.entity.user.UserEntity
 import com.example.base.kt.dataStore
@@ -60,7 +59,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
 
     override suspend fun obtainUserInfo(): Result<UserEntity> {
         if (userInfo != null) {
-            return Result.Success(userInfo!!)
+            return Result.success(userInfo!!)
         } else {
             return runBlocking {
                 context.dataStore.data
@@ -71,9 +70,9 @@ class LocalDataSource(private val context: Context) : UserDataSource {
                     .map {
                         if (it.isNotEmpty()) {
                             userInfo = Gson().fromJson(it, UserEntity::class.java)
-                            Result.Success(userInfo!!)
+                            Result.success(userInfo!!)
                         } else {
-                            Result.Error(NullPointerException("存储数据字段为null"))
+                            Result.failure(NullPointerException("存储数据字段为null"))
                         }
                     }.first()
             }

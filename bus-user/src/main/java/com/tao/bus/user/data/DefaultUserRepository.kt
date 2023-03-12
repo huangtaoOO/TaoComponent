@@ -1,8 +1,7 @@
 package com.tao.bus.user.data
 
-import com.example.base.data.Result
+import android.util.Log
 import com.example.base.entity.BaseEntity
-import kotlinx.coroutines.flow.Flow
 import com.example.base.entity.user.UserEntity as UserEntity
 
 /**
@@ -20,15 +19,15 @@ class DefaultUserRepository(
         password: String
     ): Result<BaseEntity<UserEntity>> {
         val result = remoteDataSource.signIn(username, password)
-        if (result is Result.Success && result.data.isSuccess) {
-            saveUserInfo(result.data.data)
+        if (result.isSuccess && result.getOrThrow().isSuccess) {
+            saveUserInfo(result.getOrThrow().data)
         }
         return result
     }
 
     override suspend fun signOut(): Result<BaseEntity<Unit>> {
         val result = remoteDataSource.signOut()
-        if (result is Result.Success && result.data.isSuccess) {
+        if (result.isSuccess) {
             clearUserInfo()
         }
         return result

@@ -31,13 +31,17 @@ class LoginActivity : BaseActivity() {
             binding.edName.setText(mViewModel.obtainUserName())
             mViewModel.loginFlow.collect {
                 if (it == null) return@collect
-                Toast.makeText(this@LoginActivity, "返回的数据=$it", Toast.LENGTH_LONG).show()
-                navigation(RouterURL.HOME_PAGE) { finish() }
+                if (it.isSuccess && it.getOrThrow().isSuccess){
+                    navigation(RouterURL.HOME_PAGE) { finish() }
+                }else{
+                    Toast.makeText(this@LoginActivity, "登录异常：${it.getOrNull()}", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
         binding.btLogin.click {
-            loginLogic()
+//            loginLogic()
+            navigation(RouterURL.HOME_PAGE) { finish() }
         }
 
         binding.btToRegister.click {

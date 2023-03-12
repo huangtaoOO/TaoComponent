@@ -12,8 +12,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.bus.home.databinding.FragmentHomeBinding
 import com.example.lib_ktx.viewbinding.Method
 import com.example.lib_ktx.viewbinding.binding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val binding by binding<FragmentHomeBinding>(Method.INFLATE)

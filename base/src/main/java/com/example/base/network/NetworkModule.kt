@@ -2,6 +2,7 @@ package com.example.base.network
 
 import android.content.Context
 import android.util.Log
+import com.example.base.network.service.ArticleService
 import com.example.base.network.service.UserService
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
@@ -57,5 +58,11 @@ object NetworkModule {
     fun providesNetUserService(retrofit: Retrofit): UserService {
         Log.i(TAG, "providesNetUserService")
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    fun providesNetArticleService(retrofit: Retrofit): ArticleService {
+        Log.i(TAG, "providesNetUserService")
+        return retrofit.create(ArticleService::class.java)
     }
 }

@@ -4,8 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.base.base.BaseViewModel
 import com.example.base.entity.BaseEntity
 import com.tao.bus.user.data.UserRepository
-import com.example.base.data.Result
-import com.example.base.data.succeeded
 import com.example.base.entity.user.UserEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -40,8 +38,8 @@ class LoginViewModel @Inject constructor(
 
     suspend fun obtainUserName(): String{
         val info = repository.obtainUserInfo()
-        return if (info.succeeded){
-            val name = (info as Result.Success).data.nickname
+        return if (info.isSuccess){
+            val name = info.getOrThrow().nickname
             name
         }else{
             ""

@@ -23,4 +23,9 @@ object NetUrlConst {
      * 登出
      */
     const val LOGOUT = "user/logout/json"
+
+    /**
+     * 首页文章列表
+     */
+    const val ARTICLE_LIST = "/article/list/{index}/json"
 }

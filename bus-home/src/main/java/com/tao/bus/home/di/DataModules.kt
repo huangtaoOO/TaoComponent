@@ -1,15 +1,15 @@
-package com.tao.bus.user.di
+package com.tao.bus.home.di
 
 import android.content.Context
 import com.example.base.di.IoDispatcher
 import com.example.base.di.Local
 import com.example.base.di.Remote
-import com.example.base.network.service.UserService
-import com.tao.bus.user.data.DefaultUserRepository
-import com.tao.bus.user.data.UserDataSource
-import com.tao.bus.user.data.UserRepository
-import com.tao.bus.user.data.local.LocalDataSource
-import com.tao.bus.user.data.remote.RemoteDataSource
+import com.example.base.network.service.ArticleService
+import com.tao.bus.home.data.ArticleDataSource
+import com.tao.bus.home.data.ArticleRepository
+import com.tao.bus.home.data.DefaultUserRepository
+import com.tao.bus.home.data.local.LocalDataSource
+import com.tao.bus.home.data.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,10 +30,10 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(
-        @Remote remoteDataSource: UserDataSource,
-        @Local localDataSource: UserDataSource
-    ): UserRepository {
+    fun provideArticlesRepository(
+        @Remote remoteDataSource: ArticleDataSource,
+        @Local localDataSource: ArticleDataSource
+    ): ArticleRepository {
         return DefaultUserRepository(remoteDataSource, localDataSource)
     }
 }
@@ -45,19 +45,19 @@ object DataSourceModule {
     @Remote
     @Provides
     @Singleton
-    fun provideUserRemoteDataSource(
-        userService: UserService,
+    fun provideArticleRemoteDataSource(
+        articleService: ArticleService,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): UserDataSource {
-        return RemoteDataSource(userService, ioDispatcher)
+    ): ArticleDataSource {
+        return RemoteDataSource(articleService, ioDispatcher)
     }
 
     @Local
     @Provides
     @Singleton
-    fun provideUserLocalDataSource(
+    fun provideArticleLocalDataSource(
         @ApplicationContext context: Context
-    ): UserDataSource {
+    ): ArticleDataSource {
         return LocalDataSource(context)
     }
 }

@@ -1,12 +1,24 @@
 package com.tao.bus.home.ui.home
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.base.base.BaseViewModel
+import com.tao.bus.home.data.ArticleRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository: ArticleRepository) : BaseViewModel() {
 
     private val _text = MutableStateFlow("This is home Fragment")
     val text: Flow<String> get() = _text
+
+    init {
+        viewModelScope.launch {
+            _text.value = repository.articleList(0).getOrThrow().toString()
+        }
+    }
 
 }

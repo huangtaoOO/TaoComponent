@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.example.base.data.Result
 import com.example.base.RouterURL
 import com.example.base.base.BaseActivity
 import com.example.base.entity.NetCode
@@ -38,19 +37,16 @@ class RegisterActivity : BaseActivity() {
         lifecycleScope.launchWhenResumed {
             mViewModel.registerFlow.collect {
                 if (it == null) return@collect
-                when (it) {
-                    is Result.Success<Int> -> {
-                        if (it.data == NetCode.NORMAL.value) {
-                            showToast("注册成功")
-                            ARouter.getInstance().build(RouterURL.LOGIN).navigation()
-                            finish()
-                        } else {
-                            showToast("注册失败错误:${it.data}")
-                        }
+                if (it.isSuccess) {
+                    if (it.getOrThrow() == NetCode.NORMAL.value) {
+                        showToast("注册成功")
+                        ARouter.getInstance().build(RouterURL.LOGIN).navigation()
+                        finish()
+                    } else {
+                        showToast("注册失败错误:${it.getOrThrow()}")
                     }
-                    is Result.Error -> {
-                        showToast("注册失败错误:${it.exception.message}")
-                    }
+                } else {
+                    showToast("注册失败错误:${it.exceptionOrNull()?.message}")
                 }
             }
         }
