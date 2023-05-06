@@ -1,7 +1,12 @@
 package com.tao.bus.user.data
 
 import com.example.base.entity.BaseEntity
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import java.util.concurrent.atomic.AtomicBoolean
 import com.example.base.entity.user.UserEntity as UserEntity
 
 /**
@@ -14,12 +19,15 @@ class DefaultUserRepository(
     private val localDataSource: UserDataSource,
 ) : UserRepository {
 
+    private val isLogin = AtomicBoolean(false)
+
     override suspend fun signIn(
         username: String,
-        password: String
+        password: String,
     ): Result<BaseEntity<UserEntity>> {
         val result = remoteDataSource.signIn(username, password)
         if (result.isSuccess && result.getOrThrow().isSuccess) {
+            isLogin.set(true)
             saveUserInfo(result.getOrThrow().data)
         }
         return result
@@ -29,6 +37,7 @@ class DefaultUserRepository(
         val result = remoteDataSource.signOut()
         if (result.isSuccess) {
             clearUserInfo()
+            isLogin.set(false)
         }
         return result
     }
@@ -50,7 +59,21 @@ class DefaultUserRepository(
     }
 
     override fun obtainUserInfoFlow(): StateFlow<UserEntity?> {
-        return localDataSource.obtainUserInfoFlow()
+        return localDataSource.obtainUserInfoFlow().map {
+            if (isLogin()) {
+                it
+            } else {
+                null
+            }
+        }.stateIn(
+            scope = MainScope(),
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
+    }
+
+    override fun isLogin(): Boolean {
+        return isLogin.get()
     }
 
 }

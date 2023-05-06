@@ -44,6 +44,12 @@ interface UserRepository : Repository {
 
     /**
      * 获取用户信息流
+     * 未登录为Null
      */
     fun obtainUserInfoFlow(): StateFlow<UserEntity?>
+
+    /**
+     * 是否登录
+     */
+    fun isLogin(): Boolean
 }

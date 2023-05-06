@@ -13,6 +13,7 @@ interface UserShareRepository : Repository {
 
     /**
      * 获取用户信息流
+     * 未登录为Null
      */
     fun obtainUserInfoFlow(): StateFlow<UserEntity?>
 }

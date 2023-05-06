@@ -9,8 +9,11 @@ import com.example.base.entity.user.UserEntity
 import com.example.base.kt.dataStore
 import com.google.gson.Gson
 import com.tao.bus.user.data.UserDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * Author: huangtao
@@ -60,7 +63,7 @@ class LocalDataSource(private val context: Context) : UserDataSource {
         if (userInfo.value != null) {
             return Result.success(userInfo.value!!)
         } else {
-            return runBlocking {
+            return withContext(Dispatchers.IO) {
                 context.dataStore.data
                     .map { preferences ->
                         val info = stringPreferencesKey(DataSourceConstant.UINFO)
