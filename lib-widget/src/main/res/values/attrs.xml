@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadingLayout">
+        <!--空数据占位图-->
+        <attr name="loading_empty_icon" format="reference" />
+        <!--请求错误占位图-->
+        <attr name="loading_error_icon" format="reference" />
+        <!--断网占位图-->
+        <attr name="loading_network_icon" format="reference" />
+        <!--空数据提示语-->
+        <attr name="loading_empty_tip" format="string|reference" />
+        <!--请求错误提示语-->
+        <attr name="loading_error_tip" format="string|reference" />
+        <!--断网提示语-->
+        <attr name="loading_network_tip" format="string|reference" />
+    </declare-styleable>
+</resources>

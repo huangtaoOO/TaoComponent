@@ -1,26 +1,18 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
 }
 
-
 android {
-    namespace 'com.example.bus.home'
+    namespace 'com.example.lib_widget'
     compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
         minSdk rootProject.ext.android.minSdkVersion
         targetSdk rootProject.ext.android.targetSdkVersion
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        kapt {
-            arguments {
-                arg("AROUTER_MODULE_NAME", project.getName())
-            }
-        }
     }
 
     buildTypes {
@@ -42,40 +34,15 @@ android {
 }
 
 dependencies {
-    implementation project(":base")
+    implementation project(":resources")
     implementation project(":lib-ktx")
-    implementation project(":lib-widget")
 
     implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
-    implementation "androidx.activity:activity-ktx:$rootProject.ext.dependencies.activityKtx"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
     implementation "com.google.android.material:material:$rootProject.ext.dependencies.material"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.dependencies.constraintlayout"
     testImplementation "junit:junit:$rootProject.ext.dependencies.testJunit"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.dependencies.junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.dependencies.espressoCore"
-
-    //navigation组件
-    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.ext.dependencies.navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.ext.dependencies.navigation"
-
-    //阿里路由
-    implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"
-    kapt "com.alibaba:arouter-compiler:$rootProject.ext.dependencies.arouter"
-
-    //hilt依赖注入
-    implementation "com.google.dagger:hilt-android:$rootProject.ext.dependencies.hilt"
-    kapt "com.google.dagger:hilt-compiler:$rootProject.ext.dependencies.hilt"
-
-    //Preferences DataStore
-    implementation "androidx.datastore:datastore-preferences:$rootProject.ext.dependencies.datastore"
-
-    //Gson
-    implementation "com.google.code.gson:gson:$rootProject.ext.dependencies.gson"
-
-    //下拉加载上拉刷新
-    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'
-    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'
 
     //lottie动画
     implementation 'com.airbnb.android:lottie:6.0.0'

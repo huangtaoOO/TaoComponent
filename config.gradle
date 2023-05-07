@@ -3,13 +3,13 @@ ext {
 
     android = [
             'compileSdkVersion': 33,
-            'minSdkVersion'    : 21,
+            'minSdkVersion'    : 24,
             'targetSdkVersion' : 33
     ]
 
     dependencies = [
             'coreKtx'         : '1.9.0',
-            'activityKtx'    : '1.6.1',
+            'activityKtx'     : '1.6.1',
             'material'        : '1.8.0',
             'appcompat'       : '1.6.1',
             'testJunit'       : '4.13.2',

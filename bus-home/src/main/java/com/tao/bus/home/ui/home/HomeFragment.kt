@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 mViewModel.text.collect {
-                    binding.textHome.text = it
+//                    binding.textHome.text =
                 }
             }
 
