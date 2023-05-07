@@ -1,5 +1,6 @@
 package com.tao.bus.user.data
 
+import android.util.Log
 import com.example.base.entity.BaseEntity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -59,6 +60,7 @@ class DefaultUserRepository(
     }
 
     override fun obtainUserInfoFlow(): StateFlow<UserEntity?> {
+        val initValue = localDataSource.obtainUserInfoFlow().value
         return localDataSource.obtainUserInfoFlow().map {
             if (isLogin()) {
                 it
@@ -67,8 +69,8 @@ class DefaultUserRepository(
             }
         }.stateIn(
             scope = MainScope(),
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
+            started = SharingStarted.WhileSubscribed(0),
+            initialValue = if (isLogin()) initValue else null
         )
     }
 

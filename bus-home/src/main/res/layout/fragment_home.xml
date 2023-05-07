@@ -1,16 +1,16 @@
 <com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/smart_refresh"
     tools:context="com.tao.bus.home.ui.home.HomeFragment">
 
     <com.scwang.smart.refresh.header.ClassicsHeader
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <com.example.lib_widget.LoadingLayout
+        android:id="@+id/load_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

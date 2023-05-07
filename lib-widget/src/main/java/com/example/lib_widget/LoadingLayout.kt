@@ -21,6 +21,7 @@ class LoadingLayout : FrameLayout {
 
     private val binding: LayoutLoadingLayoutBinding by binding(true)
 
+    private lateinit var currentState: State
 
     //空数据状态
     @DrawableRes
@@ -73,7 +74,8 @@ class LoadingLayout : FrameLayout {
     }
 
     private fun initView() {
-        setState(State.Loading)
+        currentState = State.Loading
+        setState(State.Normal)
     }
 
     /**
@@ -94,6 +96,10 @@ class LoadingLayout : FrameLayout {
      * 显示Loading状态
      */
     fun showLoadingState() {
+        if (currentState == State.Loading) {
+            return
+        }
+        currentState = State.Loading
         isVisible = true
         binding.groupOfStatic.isVisible = false
         binding.lottieLoad.isVisible = true
@@ -104,6 +110,10 @@ class LoadingLayout : FrameLayout {
      * 显示正常状态
      */
     fun showNormalState() {
+        if (currentState == State.Normal) {
+            return
+        }
+        currentState = State.Normal
         isVisible = false
         binding.lottieLoad.cancelAnimation()
     }
@@ -117,11 +127,15 @@ class LoadingLayout : FrameLayout {
         tip: String? = emptyTips,
         @DrawableRes icon: Int = emptyIcon,
     ) {
+        if (currentState == State.EmptyData) {
+            return
+        }
+        currentState = State.EmptyData
         isVisible = true
         emptyTips = tip
         emptyIcon = icon
         binding.ivDefault.setImageResource(emptyIcon)
-        binding.tvTips.text = emptyTips
+        binding.tvTips.text = if (emptyTips.isNullOrEmpty()) defaultEmptyTips else emptyTips
         binding.groupOfStatic.isVisible = true
         binding.lottieLoad.isVisible = false
         binding.lottieLoad.cancelAnimation()
@@ -136,11 +150,15 @@ class LoadingLayout : FrameLayout {
         tip: String? = errorTips,
         @DrawableRes icon: Int = errorIcon,
     ) {
+        if (currentState == State.Error) {
+            return
+        }
+        currentState = State.Error
         isVisible = true
         errorTips = tip
         errorIcon = icon
         binding.ivDefault.setImageResource(errorIcon)
-        binding.tvTips.text = errorTips
+        binding.tvTips.text = if (errorTips.isNullOrEmpty()) defaultErrorTips else errorTips
         binding.groupOfStatic.isVisible = true
         binding.lottieLoad.isVisible = false
         binding.lottieLoad.cancelAnimation()
@@ -155,11 +173,15 @@ class LoadingLayout : FrameLayout {
         tip: String? = errorTips,
         @DrawableRes icon: Int = errorIcon,
     ) {
+        if (currentState == State.NetworkError) {
+            return
+        }
+        currentState = State.NetworkError
         isVisible = true
         netWorkTips = tip
         netWorkIcon = icon
         binding.ivDefault.setImageResource(netWorkIcon)
-        binding.tvTips.text = netWorkTips
+        binding.tvTips.text = if (netWorkTips.isNullOrEmpty()) defaultNetworkTips else netWorkTips
         binding.groupOfStatic.isVisible = true
         binding.lottieLoad.isVisible = false
         binding.lottieLoad.cancelAnimation()
