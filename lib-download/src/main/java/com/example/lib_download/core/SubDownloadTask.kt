@@ -3,7 +3,6 @@ package com.example.lib_download.core
 import android.util.Log
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.model.SubDownloadModel
-import java.io.IOException
 import java.io.InputStream
 import java.io.RandomAccessFile
 
@@ -41,13 +40,13 @@ class SubDownloadTask(
                 ?: throw java.lang.NullPointerException("obtainStreamByRange InputStream is null")
             writeFile(input)
         } catch (e: Exception) {
-            Log.e(DownloadConfig.TAG, e.message ?: "", e)
+            Log.e(DownloadConfig.TAG, "SubDownloadTask run error : ${e.message}", e)
             subDownload.status = DownloadStatus.ERROR
             listener?.onError(e.message ?: "")
         }
     }
 
-    @Throws(IOException::class)
+    @Throws(Exception::class)
     private fun writeFile(input: InputStream) {
         Log.i(
             DownloadConfig.TAG,
@@ -55,42 +54,47 @@ class SubDownloadTask(
                     "文件路径：${subDownload.saveFile}"
         )
         val file = RandomAccessFile(subDownload.saveFile, "rwd")
-        val bufferSize = BUFFER_SIZE.coerceAtMost(subDownload.taskSize).toInt()
-        val buffer = ByteArray(bufferSize)
-        file.seek(subDownload.currentPos)
-        while (true) {
-            if (subDownload.status != DownloadStatus.DOWNLOADING) {
-                break
+        try {
+            val bufferSize = BUFFER_SIZE.coerceAtMost(subDownload.taskSize).toInt()
+            val buffer = ByteArray(bufferSize)
+            file.seek(subDownload.currentPos)
+            while (true) {
+                if (subDownload.status != DownloadStatus.DOWNLOADING) {
+                    break
+                }
+                val offset = input.read(buffer, 0, bufferSize)
+                if (offset == -1) {
+                    break
+                }
+                file.write(buffer, 0, offset)
+                subDownload.currentPos += offset
+                subDownload.completeSize += offset
+                listener?.onDownloading(offset.toLong(), subDownload.taskSize)
             }
-            val offset = input.read(buffer, 0, bufferSize)
-            if (offset == -1) {
-                break
+            //更新状态
+            if (subDownload.status == DownloadStatus.DOWNLOADING) {
+                subDownload.status = DownloadStatus.COMPLETED
             }
-            file.write(buffer, 0, offset)
-            subDownload.currentPos += offset
-            subDownload.completeSize += offset
-            listener?.onDownloading(offset.toLong(), subDownload.taskSize)
+        } catch (e: Exception) {
+            Log.e(DownloadConfig.TAG, "writeFile error = ${e.message}", e)
+            throw e
+        } finally {
+            DownloadConfig.dbHelper.update(subDownload)
+            //处理回调
+            if (subDownload.status == DownloadStatus.COMPLETED) {
+                listener?.onComplete()
+            } else if (subDownload.status == DownloadStatus.PAUSE) {
+                listener?.onPause()
+            }
+            //关闭资源
+            file.close()
+            input.close()
+            Log.i(
+                DownloadConfig.TAG,
+                "${DownloadConfig.TAG}{${hashCode()}},\n 写入状态:${subDownload.status.name} " +
+                        "总大小=${subDownload.taskSize} 开始位置${subDownload.startPos} " +
+                        "结束位置${subDownload.endPos} 完成大小${subDownload.completeSize}"
+            )
         }
-        //更新状态
-        if (subDownload.status == DownloadStatus.DOWNLOADING) {
-            subDownload.status = DownloadStatus.COMPLETED
-        }
-        DownloadConfig.dbHelper.update(subDownload)
-        //处理回调
-        if (subDownload.status == DownloadStatus.COMPLETED) {
-            listener?.onComplete()
-        } else if (subDownload.status == DownloadStatus.PAUSE) {
-            listener?.onPause()
-        }
-        //关闭资源
-        file.close()
-        input.close()
-
-        Log.i(
-            DownloadConfig.TAG,
-            "${DownloadConfig.TAG}{${hashCode()}},\n 写入状态:${subDownload.status.name} " +
-                    "总大小=${subDownload.taskSize} 开始位置${subDownload.startPos} " +
-                    "结束位置${subDownload.endPos} 完成大小${subDownload.completeSize}"
-        )
     }
 }
