@@ -1,6 +1,32 @@
-## [多线程下载](https://blog.csdn.net/tao_789456/article/details/128457971)
+# Android多模块项目
 
+## [多线程下载](https://blog.csdn.net/tao_789456/article/details/128457971)
 使用方法:
+com.github.huangtaoOO.TaoComponent:lib-download:0.0.9
+[![](https://jitpack.io/v/huangtaoOO/TaoComponent.svg)](https://jitpack.io/#huangtaoOO/TaoComponent)
+
+```gradle
+//引入依赖 gradle 7.0以下 项目根目录 build.gradle 文件
+allprojects {
+repositories {
+...
+maven { url 'https://jitpack.io' }
+}
+}
+//引入依赖 gradle 7.0以上 项目根目录 setting.gradle 文件
+dependencyResolutionManagement {
+...
+repositories {
+...
+maven { url 'https://jitpack.io' }
+}
+}
+//模块module build.gradle
+dependencies {
+...
+implementation 'com.github.huangtaoOO.TaoComponent:lib-download:0.0.7'
+}
+```
 
 ```kotlin
 //初始化，必须
