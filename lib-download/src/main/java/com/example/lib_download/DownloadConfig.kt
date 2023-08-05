@@ -56,6 +56,14 @@ object DownloadConfig {
     var mExecutorService: Executor
         private set
 
+    /**
+     * 下载过程中出现异常是否删除已下载的内容
+     * eg：下载过程中，如果出现异常，为true清除下载任务
+     * 如果设置为false建议在下载完成后业务方面进行文件MD5校验，判断文件是否受损
+     */
+    var clearTaskInError : Boolean = true
+        private set
+
 
     init {
         threadNum = 4
@@ -115,6 +123,15 @@ object DownloadConfig {
      */
     fun setDownloadThreshold(size: Long): DownloadConfig {
         downloadThreshold = size
+        return this
+    }
+
+    /**
+     * 下载过程中出现异常是否删除已下载的内容
+     * eg：断网情况下，如果
+     */
+    fun setClearTaskInError(boolean: Boolean):DownloadConfig{
+        clearTaskInError = boolean
         return this
     }
 }

@@ -21,6 +21,8 @@ class DownloadTask(
     //回调监听
     private val listener: DownloadListener
 ) : DownloadListener {
+    //避免用户多次修改 DownloadConfig.clearTaskInError的值造成在同一DownloadTask下效果不一致
+    private val clearTaskInError = DownloadConfig.clearTaskInError
 
     /**
      * 线程数
@@ -84,6 +86,7 @@ class DownloadTask(
             }
             for (task in subTasks) {
                 task.pause()
+                DownloadConfig.dbHelper.update(task.subDownload)
             }
             status = DownloadStatus.PAUSE
             listener.onPause()
@@ -124,7 +127,8 @@ class DownloadTask(
             targetFile.createNewFile()
 
             val size = DownloadConfig.httpHelper.obtainTotalSize(download.url)
-            if (size <= 0){
+            if (size <= 0) {
+                download.status = DownloadStatus.ERROR
                 listener.onError("下载出现异常，将要下载文件的长度小于0")
                 return@execute
             }
@@ -217,9 +221,12 @@ class DownloadTask(
      */
     override fun onError(msg: String) {
         //出现异常 暂停,清除任务重新下载
+        Log.e(DownloadConfig.TAG,"DownloadTask onError $msg")
         pauseDownload()
-        for (task in subTasks) {
-            DownloadConfig.dbHelper.delete(task.subDownload)
+        if (clearTaskInError){
+            for (task in subTasks) {
+                DownloadConfig.dbHelper.delete(task.subDownload)
+            }
         }
         subTasks.clear()
         listener.onError(msg)
