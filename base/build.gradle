@@ -36,10 +36,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.ext.dependencies.recyclerview"
 
     //阿里路由
     implementation "com.alibaba:arouter-api:$rootProject.ext.dependencies.arouter"

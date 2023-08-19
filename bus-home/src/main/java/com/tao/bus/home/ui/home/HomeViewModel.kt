@@ -47,13 +47,17 @@ class HomeViewModel @Inject constructor(
             val requestPage = if (refresh) {
                 1
             } else {
-                currentPage.value++
+                ++currentPage.value
             }
             repository.articleList(requestPage).also {
                 if (it.isSuccess) {
                     val result = it.getOrThrow()
                     if (result.isSuccess) {
-                        dataList.value += result.data.data
+                        if (refresh) {
+                            dataList.value = result.data.data
+                        } else {
+                            dataList.value += result.data.data
+                        }
                         over.value = result.data.over
                         loadState.value = if (dataList.value.isNotEmpty()) {
                             LoadingLayout.State.Normal
