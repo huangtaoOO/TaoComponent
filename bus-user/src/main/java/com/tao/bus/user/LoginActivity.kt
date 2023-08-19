@@ -31,10 +31,14 @@ class LoginActivity : BaseActivity() {
             binding.edName.setText(mViewModel.obtainUserName())
             mViewModel.loginFlow.collect {
                 if (it == null) return@collect
-                if (it.isSuccess && it.getOrThrow().isSuccess){
+                if (it.isSuccess && it.getOrThrow().isSuccess) {
                     navigation(RouterURL.HOME_PAGE) { finish() }
-                }else{
-                    Toast.makeText(this@LoginActivity, "登录异常：${it.getOrNull()}", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "登录异常：${it.getOrNull()}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -44,7 +48,7 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btToRegister.click {
-            navigation(RouterURL.REGISTER) { finish() }
+            navigation(path = RouterURL.REGISTER, needLogin = false) { finish() }
         }
 
         binding.btLogOut.click {
