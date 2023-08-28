@@ -20,24 +20,9 @@ import kotlinx.coroutines.withContext
  * Date: 2023/1/19
  * Desc: 本地数据源
  */
-class LocalDataSource(private val context: Context) : UserDataSource {
+internal class LocalDataSource(private val context: Context) : UserDataSource {
 
     private val userInfo: MutableStateFlow<UserEntity?> = MutableStateFlow(null)
-
-    override suspend fun signIn(
-        username: String,
-        password: String
-    ): Result<BaseEntity<UserEntity>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun signOut(): Result<BaseEntity<Unit>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun register(username: String, password: String): Result<BaseEntity<Unit>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun saveUserInfo(entity: UserEntity) {
         context.dataStore.edit {

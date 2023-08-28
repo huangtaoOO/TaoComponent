@@ -32,7 +32,7 @@ object ShareRepositoryModule {
     @Provides
     @Singleton
     fun provideUserRepository(
-        repository: UserRepository
+        repository: UserRepository,
     ): UserShareRepository {
         return DefaultUserShareRepository(repository)
     }
@@ -46,7 +46,7 @@ object RepositoryModule {
     @Singleton
     fun provideUserRepository(
         @Remote remoteDataSource: UserDataSource,
-        @Local localDataSource: UserDataSource
+        @Local localDataSource: UserDataSource,
     ): UserRepository {
         return DefaultUserRepository(remoteDataSource, localDataSource)
     }
@@ -54,14 +54,14 @@ object RepositoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataSourceModule {
+internal object DataSourceModule {
 
     @Remote
     @Provides
     @Singleton
     fun provideUserRemoteDataSource(
         userService: UserService,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
     ): UserDataSource {
         return RemoteDataSource(userService, ioDispatcher)
     }
@@ -70,7 +70,7 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideUserLocalDataSource(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): UserDataSource {
         return LocalDataSource(context)
     }
