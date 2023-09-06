@@ -28,15 +28,17 @@ rootProject.name = "TaoComponent"
 include ':app'
 /*基础框架*/
 include ':base'
-/*多线程下载*/
-include ':lib-download'
-/*kotlin的扩展*/
-include ':lib-ktx'
-/*自定义控件*/
-include ':lib-widget'
 /*业务-用户*/
 include ':bus-user'
 /*业务-首页*/
 include ':bus-home'
 /*统一资源文件*/
 include ':resources'
+/*多线程下载*/
+include ':lib-download'
+/*kotlin的扩展*/
+include ':lib-ktx'
+/*自定义控件*/
+include ':lib-widget'
+/*性能监控*/
+include ':lib-monitor'

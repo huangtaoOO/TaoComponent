@@ -65,6 +65,10 @@ downloadTask.pauseDownload()
 downloadTask.isComplete()
 ```
 
+# Android性能数据监控
+施工中...
+
+
 具体参考：app module 或者文章链接
 
 - 使用过程中如有BUG，请提issue
