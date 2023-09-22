@@ -1,5 +1,7 @@
 package com.tao.bus.user.utils
 
+import android.os.Debug
+import android.util.Log
 import com.tao.bus.user.constant.Constant
 
 /**
