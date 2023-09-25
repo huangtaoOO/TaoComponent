@@ -17,7 +17,6 @@ import java.io.File
  */
 class HighVersionKernelImpl(
     private val groups: List<CPUGroup>,
-    private val cpuCoreCurFreq: (coreIdx: Int) -> String,
 ) :
     CpuUsageRate() {
 
