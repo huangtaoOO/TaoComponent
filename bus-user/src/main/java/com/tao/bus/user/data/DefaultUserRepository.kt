@@ -1,14 +1,13 @@
 package com.tao.bus.user.data
 
-import android.util.Log
 import com.example.base.entity.BaseEntity
+import com.example.base.entity.user.UserEntity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.util.concurrent.atomic.AtomicBoolean
-import com.example.base.entity.user.UserEntity as UserEntity
 
 /**
  * Author: huangtao
