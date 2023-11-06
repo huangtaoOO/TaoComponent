@@ -1,9 +1,8 @@
 package com.tao.taocomponent
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.base.RouterURL
 import com.example.base.navigation.navigation
 import com.example.lib_download.DownloadConfig
@@ -11,11 +10,6 @@ import com.example.lib_download.ktx.createDownloadFile
 import com.example.lib_download.ktx.createDownloadTask
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.taocomponent.databinding.ActivityMainBinding
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {

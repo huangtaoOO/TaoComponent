@@ -74,9 +74,9 @@ dependencies {
     implementation "com.google.code.gson:gson:$rootProject.ext.dependencies.gson"
 
     //下拉加载上拉刷新
-    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'
-    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'
+    implementation "io.github.scwang90:refresh-layout-kernel:$rootProject.ext.dependencies.refresh"
+    implementation "io.github.scwang90:refresh-header-classics:$rootProject.ext.dependencies.refresh"
 
     //lottie动画
-    implementation 'com.airbnb.android:lottie:6.0.0'
+    implementation "com.airbnb.android:lottie:$rootProject.ext.dependencies.lottie"
 }
