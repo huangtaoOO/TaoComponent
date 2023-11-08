@@ -42,3 +42,5 @@ include ':lib-ktx'
 include ':lib-widget'
 /*性能监控*/
 include ':lib-monitor'
+///*腾讯日志库 mark 自编译*/
+include ':lib-log'
