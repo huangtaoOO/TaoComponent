@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.example.lib.log.Constant
-import com.tencent.mars.xlog.Log
+import com.example.lib.log.Log
 
 /**
  * Author: huangtao

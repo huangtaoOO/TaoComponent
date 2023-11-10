@@ -2,7 +2,7 @@ package com.example.lib.log.core
 
 import com.example.lib.log.Constant
 import com.example.lib.log.lifecycle.AppLifecycleCallback
-import com.tencent.mars.xlog.Log
+import com.example.lib.log.Log
 import com.tencent.mars.xlog.Xlog
 
 /**
