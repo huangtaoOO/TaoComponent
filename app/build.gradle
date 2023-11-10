@@ -50,8 +50,8 @@ dependencies {
     implementation project(":lib-log")
 
     implementation project(":base")
-    implementation project(":bus-user")
-    implementation project(":bus-home")
+    implementation project(':biz-user')
+    implementation project(':biz-home')
 
     implementation "androidx.core:core-ktx:$rootProject.ext.dependencies.coreKtx"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
