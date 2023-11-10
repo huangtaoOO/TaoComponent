@@ -1,10 +1,7 @@
 package com.tencent.mars.xlog;
 
-import android.content.Context;
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
-import android.widget.Toast;
 
 /**
  * @author zhaoyuan orehzhang
@@ -22,7 +19,6 @@ public class Log {
 
     // defaults to LEVEL_NONE
     private static int level = LEVEL_NONE;
-    public static Context toastSupportContext = null;
 
     public interface LogImp {
 
@@ -46,8 +42,7 @@ public class Log {
 
     }
 
-    private static LogImp debugLog = new LogImp() {
-        private Handler handler = new Handler(Looper.getMainLooper());
+    private static final LogImp debugLog = new LogImp() {
 
         @Override
         public void logV(String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
@@ -92,15 +87,6 @@ public class Log {
                 return;
             }
             android.util.Log.e(tag, log);
-
-            if (toastSupportContext != null) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(toastSupportContext, log, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
         }
 
         @Override
@@ -154,7 +140,6 @@ public class Log {
 
         if (jni) {
             Xlog.setLogLevel(level);
-            //android.util.Log.e(TAG, "no jni log level support");
         }
     }
 
