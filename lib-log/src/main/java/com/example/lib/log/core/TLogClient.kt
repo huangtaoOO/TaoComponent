@@ -1,8 +1,8 @@
 package com.example.lib.log.core
 
 import com.example.lib.log.Constant
-import com.example.lib.log.lifecycle.AppLifecycleCallback
 import com.example.lib.log.Log
+import com.example.lib.log.lifecycle.AppLifecycleCallback
 import com.tencent.mars.xlog.Xlog
 
 /**
@@ -48,9 +48,7 @@ object TLogClient {
         if (!isInitialized) {
             curConfig.context.registerActivityLifecycleCallbacks(AppLifecycleCallback())
         }
-        Runtime.getRuntime().addShutdownHook(Thread {
-            Log.i(Constant.TAG, "-- Runtime.getRuntime().addShutdownHook --")
-        })
+        Log.i(Constant.TAG, " -- TLogClient initTLog -- \n${Log.getSysInfo()}")
     }
 
     fun closeTLog() {

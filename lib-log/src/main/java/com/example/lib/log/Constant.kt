@@ -11,7 +11,7 @@ package com.example.lib.log
  */
 object Constant {
 
-    const val TAG = "XLog"
+    const val TAG = "TLog"
 
     const val DEFAULT_LOG_FILE_NAME = "TLog"
 

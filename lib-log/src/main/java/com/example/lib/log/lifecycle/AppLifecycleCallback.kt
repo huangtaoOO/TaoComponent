@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import com.example.lib.log.Constant
 import com.example.lib.log.Log
+import com.example.lib.log.core.TLogClient
 
 /**
  * Author: huangtao
@@ -13,11 +14,14 @@ import com.example.lib.log.Log
  */
 class AppLifecycleCallback : Application.ActivityLifecycleCallbacks {
 
+    private var createdCounter = 0
+
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         Log.i(
             Constant.TAG,
             "onActivityCreated => ${activity::class.simpleName} code=${activity.hashCode()} savedInstanceState=${savedInstanceState}"
         )
+        createdCounter++
     }
 
     override fun onActivityStarted(activity: Activity) {
@@ -60,5 +64,10 @@ class AppLifecycleCallback : Application.ActivityLifecycleCallbacks {
             Constant.TAG,
             "onActivityDestroyed => ${activity::class.simpleName} code=${activity.hashCode()}"
         )
+        createdCounter--
+        if (createdCounter == 0 && !activity.isChangingConfigurations) {
+            Log.i(Constant.TAG, " -- APP exit -- ")
+            TLogClient.flushTLog(false)
+        }
     }
 }
