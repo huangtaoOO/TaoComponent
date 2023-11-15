@@ -1,4 +1,5 @@
 ext {
+    logversion = '0.0.1'
     libversion = '0.0.5'
 
     android = [
