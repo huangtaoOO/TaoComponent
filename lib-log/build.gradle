@@ -54,7 +54,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.huangtaoOO'
-                artifactId = 'lib-download'
+                artifactId = 'lib-log'
                 version = "$rootProject.ext.logversion"
             }
         }
