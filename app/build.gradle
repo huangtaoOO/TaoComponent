@@ -42,6 +42,7 @@ android {
         viewBinding true
         dataBinding true
     }
+    namespace 'com.tao.taocomponent'
 }
 
 dependencies {
