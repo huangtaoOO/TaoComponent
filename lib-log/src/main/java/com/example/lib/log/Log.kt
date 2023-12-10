@@ -82,37 +82,6 @@ object Log {
 
     @JvmStatic
     fun f(tag: String, msg: String) {
-        f(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun e(tag: String, msg: String) {
-        e(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun w(tag: String, msg: String) {
-        w(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun i(tag: String, msg: String) {
-        i(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun d(tag: String, msg: String) {
-        d(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun v(tag: String, msg: String) {
-        v(tag, msg, null)
-    }
-
-    @JvmStatic
-    fun f(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
         logImp.logF(
             tag,
             "",
@@ -121,13 +90,12 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
     @JvmStatic
-    fun e(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
+    fun e(tag: String, msg: String) {
         logImp.logE(
             tag,
             "",
@@ -136,13 +104,12 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
     @JvmStatic
-    fun w(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
+    fun w(tag: String, msg: String) {
         logImp.logW(
             tag,
             "",
@@ -151,13 +118,12 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
     @JvmStatic
-    fun i(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
+    fun i(tag: String, msg: String) {
         logImp.logI(
             tag,
             "",
@@ -166,13 +132,12 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
     @JvmStatic
-    fun d(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
+    fun d(tag: String, msg: String) {
         logImp.logD(
             tag,
             "",
@@ -181,14 +146,12 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
-
     @JvmStatic
-    fun v(tag: String, format: String, vararg obj: Any?) {
-        val log = String.format(format, obj)
+    fun v(tag: String, msg: String) {
         logImp.logV(
             tag,
             "",
@@ -197,14 +160,15 @@ object Log {
             Process.myPid(),
             Process.myTid().toLong(),
             Looper.getMainLooper().thread.id,
-            log
+            msg
         )
     }
 
+
     @JvmStatic
-    fun printErrStackTrace(tag: String, tr: Throwable?, format: String, vararg obj: Any?) {
-        var log = String.format(format, obj)
-        log += "  " + Log.getStackTraceString(tr)
+    fun printErrStackTrace(tag: String, tr: Throwable?, msg: String) {
+        var log = msg
+        log += "\n" + Log.getStackTraceString(tr)
         logImp.logE(
             tag,
             "",

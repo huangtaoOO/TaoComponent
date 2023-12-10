@@ -1,6 +1,6 @@
 ext {
-    logversion = '0.0.1'
-    libversion = '0.0.5'
+    logversion = '0.0.11'
+    libversion = '0.0.11'
 
     android = [
             'compileSdkVersion': 33,
