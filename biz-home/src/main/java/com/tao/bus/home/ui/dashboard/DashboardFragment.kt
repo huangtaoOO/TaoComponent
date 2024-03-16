@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.base.base.BaseFragment
 import com.example.bus.home.databinding.FragmentDashboardBinding
 import com.example.lib_ktx.viewbinding.Method
 import com.example.lib_ktx.viewbinding.binding
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private val binding by binding<FragmentDashboardBinding>(Method.INFLATE)
 

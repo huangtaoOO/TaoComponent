@@ -37,12 +37,15 @@ android {
         jvmTarget = '11'
     }
     buildFeatures {
+        buildConfig true
         viewBinding true
     }
     namespace 'com.tao.base'
 }
 
 dependencies {
+    implementation project(":lib-log")
+
     implementation "androidx.appcompat:appcompat:$rootProject.ext.dependencies.appcompat"
     implementation "androidx.recyclerview:recyclerview:$rootProject.ext.dependencies.recyclerview"
 

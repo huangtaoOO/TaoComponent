@@ -1,16 +1,15 @@
 package com.tao.bus.home.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.base.base.BaseFragment
 import com.example.bus.home.databinding.FragmentHomeBinding
 import com.example.lib_ktx.viewbinding.Method
 import com.example.lib_ktx.viewbinding.binding
@@ -19,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private val binding by binding<FragmentHomeBinding>(Method.INFLATE)
 
@@ -49,7 +48,6 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 mViewModel.uiState.collect {
-                    Log.i("测试", "$it")
                     binding.smartRefresh.setEnableRefresh(it.loadState != LoadingLayout.State.Loading)
                     binding.smartRefresh.setEnableLoadMore((it.loadState != LoadingLayout.State.Loading) || it.over)
                     if (it.loadState != LoadingLayout.State.Loading) {

@@ -1,22 +1,16 @@
 package com.tao.bus.home.di
 
-import android.content.Context
-import com.example.base.di.IoDispatcher
 import com.example.base.di.Local
 import com.example.base.di.Remote
-import com.example.base.network.service.ArticleService
 import com.tao.bus.home.data.ArticleDataSource
 import com.tao.bus.home.data.ArticleRepository
 import com.tao.bus.home.data.DefaultUserRepository
 import com.tao.bus.home.data.local.LocalDataSource
 import com.tao.bus.home.data.remote.RemoteDataSource
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 /**
  * Author: huangtao
@@ -25,39 +19,30 @@ import javax.inject.Singleton
  */
 
 @Module
-@InstallIn(SingletonComponent::class)
-object RepositoryModule {
+@InstallIn(ViewModelComponent::class)
+abstract class RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideArticlesRepository(
-        @Remote remoteDataSource: ArticleDataSource,
-        @Local localDataSource: ArticleDataSource
-    ): ArticleRepository {
-        return DefaultUserRepository(remoteDataSource, localDataSource)
-    }
+
+    @Binds
+    abstract fun provideArticlesRepository(
+        defaultUserRepository: DefaultUserRepository
+    ): ArticleRepository
 }
 
 @Module
-@InstallIn(SingletonComponent::class)
-object DataSourceModule {
+@InstallIn(ViewModelComponent::class)
+abstract class DataSourceModule {
 
     @Remote
-    @Provides
-    @Singleton
-    fun provideArticleRemoteDataSource(
-        articleService: ArticleService,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): ArticleDataSource {
-        return RemoteDataSource(articleService, ioDispatcher)
-    }
+    @Binds
+    abstract fun provideArticleRemoteDataSource(
+        remoteDataSource: RemoteDataSource
+    ): ArticleDataSource
+
 
     @Local
-    @Provides
-    @Singleton
-    fun provideArticleLocalDataSource(
-        @ApplicationContext context: Context
-    ): ArticleDataSource {
-        return LocalDataSource(context)
-    }
+    @Binds
+    abstract fun provideArticleLocalDataSource(
+        localDataSource: LocalDataSource
+    ): ArticleDataSource
 }

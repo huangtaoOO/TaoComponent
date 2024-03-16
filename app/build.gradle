@@ -46,11 +46,9 @@ android {
 }
 
 dependencies {
+    implementation project(":base")
     implementation project(":lib-download")
     implementation project(":lib-ktx")
-    implementation project(":lib-log")
-
-    implementation project(":base")
     implementation project(':biz-user')
     implementation project(':biz-home')
 

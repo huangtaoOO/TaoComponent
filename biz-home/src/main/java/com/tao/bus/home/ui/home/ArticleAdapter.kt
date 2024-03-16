@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.base.entity.home.ArticleEntity
-import com.example.base.ui.BindingViewHolder
 import com.example.bus.home.databinding.LayoutArticleItemBinding
+import com.example.lib_ktx.viewbinding.BindingViewHolder
 
 class ArticleAdapter :
     ListAdapter<ArticleEntity, BindingViewHolder<LayoutArticleItemBinding>>(Diff()) {

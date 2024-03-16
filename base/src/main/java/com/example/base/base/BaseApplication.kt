@@ -1,6 +1,9 @@
 package com.example.base.base
 
 import android.app.Application
+import com.example.base.start.LogTask
+import com.example.base.start.RouterTask
+import com.example.base.start.StartTask
 
 /**
  * Author: huangtao
@@ -16,5 +19,20 @@ open class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        initStartTask()
+    }
+
+    private fun initStartTask() {
+        val startTasks = buildStartTask()
+        startTasks.forEach {
+            it.start(this)
+        }
+    }
+
+    open fun buildStartTask(): MutableList<StartTask> {
+        return mutableListOf(
+            LogTask(),
+            RouterTask()
+        )
     }
 }
