@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.base.RouterURL
 import com.example.base.base.BaseActivity
 import com.example.base.entity.NetCode
-import com.example.lib_ktx.ui.click
+import com.example.base.kt.click
 import com.example.lib_ktx.ui.showToast
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.bus.user.constant.Constant

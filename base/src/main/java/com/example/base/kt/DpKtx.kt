@@ -1,5 +1,7 @@
 package com.example.base.kt
 
+import com.example.base.base.BaseApplication
+
 /**
  * Author: huangtao
  * Date: 2023/1/19

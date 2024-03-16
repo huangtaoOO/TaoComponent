@@ -7,8 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.base.base.BaseActivity
 import com.example.base.RouterURL
+import com.example.base.kt.click
 import com.example.base.navigation.navigation
-import com.example.lib_ktx.ui.click
 import com.example.lib_ktx.viewbinding.binding
 import com.tao.bus.user.constant.Constant
 import com.tao.bus.user.databinding.ActivityLoginBinding
