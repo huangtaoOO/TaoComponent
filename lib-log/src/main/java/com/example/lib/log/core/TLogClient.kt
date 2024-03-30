@@ -3,6 +3,7 @@ package com.example.lib.log.core
 import com.example.lib.log.Constant
 import com.example.lib.log.Log
 import com.example.lib.log.lifecycle.AppLifecycleCallback
+import com.example.lib.log.utils.LogZipTools
 import com.tencent.mars.xlog.Xlog
 
 /**
@@ -69,5 +70,17 @@ object TLogClient {
         } else {
             null
         }
+    }
+
+    /**
+     * 压缩日志。耗时任务请放在子线程中执行
+     */
+    fun zipLog(zip: String): Boolean {
+        return runCatching {
+            LogZipTools.zip(curConfig.logPath, zip)
+            true
+        }.onFailure {
+            Log.printErrStackTrace(Constant.TAG, it, "zipLog error: ${it.message}")
+        }.getOrNull() ?: false
     }
 }
