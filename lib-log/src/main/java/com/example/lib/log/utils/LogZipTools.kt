@@ -1,5 +1,6 @@
 package com.example.lib.log.utils
 
+import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
@@ -40,9 +41,9 @@ object LogZipTools {
                 val zipEntry = ZipEntry(fileStr + File.separator)
                 zip.putNextEntry(zipEntry)
                 zip.closeEntry()
-            }
-            for (f in fileList) {
-                zipFiles(folder + fileStr + File.separator, f.name, zip)
+                for (f in fileList) {
+                    zipFiles(folder,fileStr + File.separator + f.name, zip)
+                }
             }
         }
     }
