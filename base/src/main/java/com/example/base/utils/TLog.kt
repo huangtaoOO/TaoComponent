@@ -1,6 +1,7 @@
 package com.example.base.utils
 
-import android.util.Log
+import com.example.lib.log.Log
+
 
 object TLog {
 
@@ -31,7 +32,7 @@ object TLog {
 
     @JvmStatic
     fun e(tag: String, msg: String, tr: Throwable?) {
-        Log.e(tag, msg, tr)
+        Log.e(tag, msg)
     }
 
     @JvmStatic
@@ -41,5 +42,10 @@ object TLog {
             longInfo(tag, str.substring(4000))
         } else
             Log.i(tag, str)
+    }
+
+    @JvmStatic
+    fun logFlush() {
+        Log.appenderFlushSync(true)
     }
 }

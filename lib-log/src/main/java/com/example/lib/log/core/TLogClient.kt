@@ -5,6 +5,7 @@ import com.example.lib.log.Log
 import com.example.lib.log.lifecycle.AppLifecycleCallback
 import com.example.lib.log.utils.LogZipTools
 import com.tencent.mars.xlog.Xlog
+import java.security.interfaces.XECKey
 
 /**
  * Author: huangtao
@@ -29,23 +30,24 @@ object TLogClient {
             closeTLog()
         }
         curConfig = config
-        Log.setLogImp(Xlog())
+        Log.setLogImp(Xlog().apply {
+            setMaxFileSize(0, config.maxFileSize)
+        })
         val isASync = if (config.async) {
             Xlog.AppednerModeAsync
         } else {
             Xlog.AppednerModeSync
         }
-        Xlog.setConsoleLogOpen(config.consolePrint)
-        Xlog.setMaxFileSize(config.maxFileSize)
-        Xlog.appenderOpen(
+        Xlog.open(
+            false,
             config.level.value,
             isASync,
             config.cachePath,
             config.logPath,
             config.namePrefix,
-            config.cacheDay,
             config.publicKey
         )
+        Log.setConsoleLogOpen(config.consolePrint)
         if (!isInitialized) {
             curConfig.context.registerActivityLifecycleCallbacks(AppLifecycleCallback())
         }
@@ -60,7 +62,7 @@ object TLogClient {
 
     fun flushTLog(isSync: Boolean) {
         if (this::curConfig.isInitialized) {
-            Log.appenderFlush(isSync)
+            Log.appenderFlushSync(isSync)
         }
     }
 

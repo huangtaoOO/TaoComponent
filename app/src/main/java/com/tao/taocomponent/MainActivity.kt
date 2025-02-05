@@ -3,8 +3,7 @@ package com.tao.taocomponent
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.base.RouterURL
-import com.example.base.navigation.navigation
+import com.example.base.utils.TLog
 import com.example.lib_download.DownloadConfig
 import com.example.lib_download.ktx.createDownloadFile
 import com.example.lib_download.ktx.createDownloadTask
@@ -46,10 +45,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            navigation(RouterURL.HOME_PAGE) {
-                finish()
-            }
+            TLog.i("涛", "2222222222")
+            TLog.v("涛", "2222222222")
+            TLog.d("涛", "2222222222")
+            TLog.e("涛", "2222222222")
+            TLog.w("涛", "2222222222")
         }
-        
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        TLog.logFlush()
     }
 }

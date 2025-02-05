@@ -19,7 +19,7 @@ import com.example.lib.log.Constant
  */
 data class XLogConfig(
     val context: Application,
-    val level: LogLevel = LogLevel.INFO,
+    val level: LogLevel = LogLevel.ALL,
     val async: Boolean = true,
     val logPath: String = defaultLogPath(context),
     val cachePath: String = defaultCachePath(context),
