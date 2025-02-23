@@ -24,28 +24,23 @@ object Log {
 
     private val mLogInstanceMap = mutableMapOf<String, LogInstance>()
 
-    private val SYS_INFO by lazy {
-        val sb = StringBuilder()
-        try {
-            sb.append("VERSION.RELEASE:[").append(Build.VERSION.RELEASE)
-            sb.append("] \nVERSION.CODENAME:[").append(Build.VERSION.CODENAME)
-            sb.append("] \nVERSION.INCREMENTAL:[").append(Build.VERSION.INCREMENTAL)
-            sb.append("] \nBOARD:[").append(Build.BOARD)
-            sb.append("] \nDEVICE:[").append(Build.DEVICE)
-            sb.append("] \nDISPLAY:[").append(Build.DISPLAY)
-            sb.append("] \nFINGERPRINT:[").append(Build.FINGERPRINT)
-            sb.append("] \nHOST:[").append(Build.HOST)
-            sb.append("] \nMANUFACTURER:[").append(Build.MANUFACTURER)
-            sb.append("] \nMODEL:[").append(Build.MODEL)
-            sb.append("] \nPRODUCT:[").append(Build.PRODUCT)
-            sb.append("] \nTAGS:[").append(Build.TAGS)
-            sb.append("] \nTYPE:[").append(Build.TYPE)
-            sb.append("] \nUSER:[").append(Build.USER).append("]")
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-        sb.toString()
-    }
+    private val SYS_INFO = """
+        VERSION.RELEASE: [${Build.VERSION.RELEASE}]
+        VERSION.CODENAME: [${Build.VERSION.CODENAME}]
+        VERSION.INCREMENTAL: [${Build.VERSION.INCREMENTAL}]
+        BOARD: [${Build.BOARD}]
+        DEVICE: [${Build.DEVICE}]
+        DISPLAY: [${Build.DISPLAY}]
+        FINGERPRINT: [${Build.FINGERPRINT}]
+        HOST: [${Build.HOST}]
+        MANUFACTURER: [${Build.MANUFACTURER}]
+        MODEL: [${Build.MODEL}]
+        PRODUCT: [${Build.PRODUCT}]
+        TAGS: [${Build.TAGS}]
+        TYPE: [${Build.TYPE}]
+        USER: [${Build.USER}]
+        """.trimIndent()
+
 
     @JvmStatic
     fun openLogInstance(
@@ -55,10 +50,10 @@ object Log {
         logDir: String,
         nameprefix: String,
         cacheDays: Int
-    ): LogInstance? {
+    ): LogInstance {
         synchronized(mLogInstanceMap) {
             if (mLogInstanceMap.containsKey(nameprefix)) {
-                return mLogInstanceMap[nameprefix]
+                return mLogInstanceMap[nameprefix]!!
             }
             val instance = LogInstance(
                 level,

@@ -105,7 +105,7 @@ interface LogImp {
         cacheDays: Int
     )
 
-    open fun appenderClose()
+    fun appenderClose()
 
     fun appenderFlush(logInstancePtr: Long, isSync: Boolean)
 

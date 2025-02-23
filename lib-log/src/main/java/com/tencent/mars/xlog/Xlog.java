@@ -1,33 +1,12 @@
 package com.tencent.mars.xlog;
 
+import com.example.lib.log.core.AppenderMode;
+import com.example.lib.log.core.CompressLevel;
+import com.example.lib.log.core.CompressMode;
+import com.example.lib.log.core.LogLevel;
 import com.example.lib.log.imp.LogImp;
 
 public class Xlog implements LogImp {
-
-    public static final int LEVEL_ALL = 0;
-    public static final int LEVEL_VERBOSE = 0;
-    public static final int LEVEL_DEBUG = 1;
-    public static final int LEVEL_INFO = 2;
-    public static final int LEVEL_WARNING = 3;
-    public static final int LEVEL_ERROR = 4;
-    public static final int LEVEL_FATAL = 5;
-    public static final int LEVEL_NONE = 6;
-
-    public static final int COMPRESS_LEVEL1 = 1;
-    public static final int COMPRESS_LEVEL2 = 2;
-    public static final int COMPRESS_LEVEL3 = 3;
-    public static final int COMPRESS_LEVEL4 = 4;
-    public static final int COMPRESS_LEVEL5 = 5;
-    public static final int COMPRESS_LEVEL6 = 6;
-    public static final int COMPRESS_LEVEL7 = 7;
-    public static final int COMPRESS_LEVEL8 = 8;
-    public static final int COMPRESS_LEVEL9 = 9;
-
-    public static final int AppednerModeAsync = 0;
-    public static final int AppednerModeSync = 1;
-
-    public static final int ZLIB_MODE = 0;
-    public static final int ZSTD_MODE = 1;
 
     static class XLoggerInfo {
         public int level;
@@ -41,18 +20,18 @@ public class Xlog implements LogImp {
     }
 
     public static class XLogConfig {
-        public int level = LEVEL_INFO;
-        public int mode = AppednerModeAsync;
+        public int level = CompressLevel.LEVEL0.getValue();
+        public int mode = AppenderMode.Async.getValue();
         public String logdir;
         public String nameprefix;
         public String pubkey = "";
-        public int compressmode = ZLIB_MODE;
+        public int compressmode = CompressMode.ZLIB.getValue();
         public int compresslevel = 0;
         public String cachedir;
         public int cachedays = 0;
     }
 
-    public static void open(boolean isLoadLib, int level, int mode, String cacheDir, String logDir, String nameprefix, String pubkey) {
+    public static void open(boolean isLoadLib, int level, int mode, String cacheDir, String logDir, String nameprefix, String pubkey, int cachedays) {
         if (isLoadLib) {
             System.loadLibrary("c++_shared");
             System.loadLibrary("marsxlog");
@@ -64,10 +43,10 @@ public class Xlog implements LogImp {
         logConfig.logdir = logDir;
         logConfig.nameprefix = nameprefix;
         logConfig.pubkey = pubkey;
-        logConfig.compressmode = ZLIB_MODE;
+        logConfig.compressmode = CompressMode.ZLIB.getValue();
         logConfig.compresslevel = 0;
         logConfig.cachedir = cacheDir;
-        logConfig.cachedays = 0;
+        logConfig.cachedays = cachedays;
         appenderOpen(logConfig);
     }
 
@@ -77,32 +56,32 @@ public class Xlog implements LogImp {
 
     @Override
     public void logV(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_VERBOSE, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.VERBOSE.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
     @Override
     public void logD(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_DEBUG, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.DEBUG.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
     @Override
     public void logI(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_INFO, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.INFO.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
     @Override
     public void logW(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_WARNING, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.WARNING.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
     @Override
     public void logE(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_ERROR, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.ERROR.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
     @Override
     public void logF(long logInstancePtr, String tag, String filename, String funcname, int line, int pid, long tid, long maintid, String log) {
-        logWrite2(logInstancePtr, LEVEL_FATAL, decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
+        logWrite2(logInstancePtr, LogLevel.FATAL.getValue(), decryptTag(tag), filename, funcname, line, pid, tid, maintid, log);
     }
 
 
@@ -114,7 +93,7 @@ public class Xlog implements LogImp {
         logConfig.mode = mode;
         logConfig.logdir = logDir;
         logConfig.nameprefix = nameprefix;
-        logConfig.compressmode = ZLIB_MODE;
+        logConfig.compressmode = CompressMode.ZLIB.getValue();
         logConfig.pubkey = "";
         logConfig.cachedir = cacheDir;
         logConfig.cachedays = cacheDays;
@@ -144,7 +123,7 @@ public class Xlog implements LogImp {
         logConfig.mode = mode;
         logConfig.logdir = logDir;
         logConfig.nameprefix = nameprefix;
-        logConfig.compressmode = ZLIB_MODE;
+        logConfig.compressmode = CompressMode.ZLIB.getValue();
         logConfig.pubkey = "";
         logConfig.cachedir = cacheDir;
         logConfig.cachedays = cacheDays;
