@@ -62,20 +62,12 @@ object TLogClient {
         }
     }
 
-    fun getLogPath(): String? {
-        return if (this::curConfig.isInitialized) {
-            curConfig.logPath
-        } else {
-            null
-        }
-    }
-
     /**
      * 压缩日志。耗时任务请放在子线程中执行
      */
-    fun zipLog(zip: String): Boolean {
+    fun zipLog(log: String, zip: String): Boolean {
         return runCatching {
-            LogZipTools.zip(curConfig.logPath, zip)
+            LogZipTools.zip(log, zip)
             true
         }.onFailure {
             Log.printErrStackTrace(Constant.TAG, it, "zipLog error: ${it.message}")
