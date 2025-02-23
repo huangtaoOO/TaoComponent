@@ -1,6 +1,5 @@
 package com.example.lib.log.utils
 
-import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry

@@ -14,11 +14,6 @@ import java.security.interfaces.XECKey
  */
 object TLogClient {
 
-    init {
-        System.loadLibrary("c++_shared")
-        System.loadLibrary("marsxlog")
-    }
-
     private lateinit var curConfig: XLogConfig
 
     /**
@@ -34,18 +29,19 @@ object TLogClient {
             setMaxFileSize(0, config.maxFileSize)
         })
         val isASync = if (config.async) {
-            Xlog.AppednerModeAsync
+            AppenderMode.Async.value
         } else {
-            Xlog.AppednerModeSync
+            AppenderMode.Sync.value
         }
         Xlog.open(
-            false,
+            true,
             config.level.value,
             isASync,
             config.cachePath,
             config.logPath,
             config.namePrefix,
-            config.publicKey
+            config.publicKey,
+            config.cacheDay
         )
         Log.setConsoleLogOpen(config.consolePrint)
         if (!isInitialized) {
